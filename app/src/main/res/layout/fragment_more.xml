@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+
+    android:layout_height="match_parent"
+
+    android:background="@drawable/bg_app"
+
+    android:fillViewport="true">
+
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+
+        android:orientation="vertical"
+
+        android:padding="@dimen/spacing_lg">
+
+
+        <TextView
+            style="@style/TextAppearance.App.Heading1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/more_title" />
+
+
+        <TextView
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:text="TOOLS"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/qiblaTextView"
+            style="@style/TextAppearance.App.BodyPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:background="@drawable/bg_home_row"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/spacing_lg"
+            android:text="🧭  Qibla Direction  "
+            android:textColor="@color/text_primary"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tasbihTextView"
+            style="@style/TextAppearance.App.BodyPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:background="@drawable/bg_home_row"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/spacing_lg"
+            android:text="☾  Tasbih Counter"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold" />
+
+
+        <TextView
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:text="ACCOUNT"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/profileTextView"
+            style="@style/TextAppearance.App.BodyPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:background="@drawable/bg_home_row"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/spacing_lg"
+            android:text="👤  My Profile       "
+            android:textColor="@color/text_primary"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/medalsTextView"
+            style="@style/TextAppearance.App.BodyPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:background="@drawable/bg_home_row"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/spacing_lg"
+            android:text="🏅  Medals &amp; Trophies"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/friendsTextView"
+            style="@style/TextAppearance.App.BodyPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:background="@drawable/bg_home_row"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/spacing_lg"
+            android:text="👥  Friends            "
+            android:textColor="@color/text_primary"
+            android:textStyle="bold" />
+
+
+        <TextView
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:text="PREFERENCES"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/prayerRemindersTextView"
+            style="@style/TextAppearance.App.BodyPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:background="@drawable/bg_home_row"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/spacing_lg"
+            android:text="🔔  Prayer Reminders                                    On ›"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/locationMethodTextView"
+            style="@style/TextAppearance.App.BodyPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:background="@drawable/bg_home_row"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/spacing_lg"
+            android:text="📍  Location &amp; Method                            Hanafi ›"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/languageTextView"
+            style="@style/TextAppearance.App.BodyPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:background="@drawable/bg_home_row"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/spacing_lg"
+            android:text="🌐  Language                                              English ›"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/aboutTextView"
+            style="@style/TextAppearance.App.BodyPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:background="@drawable/bg_home_row"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/spacing_lg"
+            android:text="ℹ️  About Noor       "
+            android:textColor="@color/text_primary"
+            android:textStyle="bold" />
+
+
+        <TextView
+
+            android:id="@+id/logoutTextView"
+
+            style="@style/TextAppearance.App.Button"
+
+            android:layout_width="match_parent"
+
+            android:layout_height="56dp"
+
+            android:layout_marginTop="@dimen/spacing_xl"
+
+            android:background="@drawable/bg_logout_action"
+
+            android:clickable="true"
+
+            android:focusable="true"
+
+            android:gravity="center"
+
+            android:text="@string/logout_action"
+
+            android:textColor="@color/rose_dua" />
+
+    </LinearLayout>
+
+</ScrollView>
+

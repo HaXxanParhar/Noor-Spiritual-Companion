@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_size_display">24sp</dimen>
+    <dimen name="text_size_h1">20sp</dimen>
+    <dimen name="text_size_h2">16sp</dimen>
+    <dimen name="text_size_body_primary">14sp</dimen>
+    <dimen name="text_size_body_secondary">13sp</dimen>
+    <dimen name="text_size_caption">12sp</dimen>
+    <dimen name="text_size_caption_small">11sp</dimen>
+    <dimen name="text_size_button">13sp</dimen>
+    <dimen name="text_size_input">14sp</dimen>
+    <dimen name="text_size_bottom_nav">11sp</dimen>
+
+    <dimen name="spacing_xs">4dp</dimen>
+    <dimen name="spacing_sm">8dp</dimen>
+    <dimen name="spacing_md">12dp</dimen>
+    <dimen name="spacing_lg">16dp</dimen>
+    <dimen name="spacing_xl">24dp</dimen>
+    <dimen name="spacing_2xl">32dp</dimen>
+    <dimen name="screen_padding">24dp</dimen>
+    <dimen name="card_radius">24dp</dimen>
+    <dimen name="button_height">50dp</dimen>
+    <dimen name="button_radius">16dp</dimen>
+    <dimen name="logo_size">80dp</dimen>
+    <dimen name="home_row_height">58dp</dimen>
+    <dimen name="bottom_nav_height">72dp</dimen>
+    <dimen name="icon_box_size">38dp</dimen>
+    <dimen name="indicator_dot">8dp</dimen>
+    <dimen name="indicator_active_width">24dp</dimen>
+</resources>

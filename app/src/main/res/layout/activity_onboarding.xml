@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_app"
+    android:orientation="vertical"
+    android:padding="@dimen/screen_padding"
+    android:paddingTop="40dp"
+    android:paddingBottom="10dp">
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/onboardingViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:id="@+id/indicatorContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/spacing_md"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/indicatorOne"
+            android:layout_width="@dimen/indicator_active_width"
+            android:layout_height="@dimen/indicator_dot"
+            android:background="@drawable/bg_indicator_active" />
+
+        <View
+            android:id="@+id/indicatorTwo"
+            android:layout_width="@dimen/indicator_dot"
+            android:layout_height="@dimen/indicator_dot"
+            android:layout_marginStart="@dimen/spacing_sm"
+            android:background="@drawable/bg_indicator_inactive" />
+
+        <View
+            android:id="@+id/indicatorThree"
+            android:layout_width="@dimen/indicator_dot"
+            android:layout_height="@dimen/indicator_dot"
+            android:layout_marginStart="@dimen/spacing_sm"
+            android:background="@drawable/bg_indicator_inactive" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/primaryActionTextView"
+        style="@style/TextAppearance.App.Button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginTop="@dimen/spacing_xl"
+        android:background="@drawable/bg_primary_action"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="@string/action_next" />
+
+    <TextView
+        android:id="@+id/skipTextView"
+        style="@style/TextAppearance.App.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/spacing_sm"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="@dimen/spacing_sm"
+        android:text="@string/action_skip"
+        android:textColor="@color/text_secondary" />
+</LinearLayout>

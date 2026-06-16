@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_app"
+    android:paddingTop="40dp"
+    android:paddingBottom="10dp"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_lg">
+
+        <TextView
+            android:id="@+id/backTextView"
+            style="@style/TextAppearance.App.Heading1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="←  Prayer Reminders 🔔" />
+
+        <TextView
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:letterSpacing="0.12"
+            android:text="PRAYER ALERTS"
+            android:textStyle="bold" />
+
+        <TextView style="@style/TextAppearance.App.BodyPrimary" android:layout_width="match_parent" android:layout_height="54dp" android:layout_marginTop="@dimen/spacing_md" android:background="@drawable/bg_home_row" android:gravity="center_vertical" android:paddingHorizontal="@dimen/spacing_lg" android:text="Fajr · 4:21 AM                                      ●" android:textColor="@color/text_primary" android:textStyle="bold" />
+        <TextView style="@style/TextAppearance.App.BodyPrimary" android:layout_width="match_parent" android:layout_height="54dp" android:layout_marginTop="@dimen/spacing_sm" android:background="@drawable/bg_home_row" android:gravity="center_vertical" android:paddingHorizontal="@dimen/spacing_lg" android:text="Zuhr · 12:48 PM                                  ●" android:textColor="@color/text_primary" android:textStyle="bold" />
+        <TextView style="@style/TextAppearance.App.BodyPrimary" android:layout_width="match_parent" android:layout_height="54dp" android:layout_marginTop="@dimen/spacing_sm" android:background="@drawable/bg_home_row" android:gravity="center_vertical" android:paddingHorizontal="@dimen/spacing_lg" android:text="Asr · 4:17 PM                                      ●" android:textColor="@color/text_primary" android:textStyle="bold" />
+        <TextView style="@style/TextAppearance.App.BodyPrimary" android:layout_width="match_parent" android:layout_height="54dp" android:layout_marginTop="@dimen/spacing_sm" android:background="@drawable/bg_home_row" android:gravity="center_vertical" android:paddingHorizontal="@dimen/spacing_lg" android:text="Maghrib · 7:24 PM                              ●" android:textColor="@color/text_primary" android:textStyle="bold" />
+        <TextView style="@style/TextAppearance.App.BodyPrimary" android:layout_width="match_parent" android:layout_height="54dp" android:layout_marginTop="@dimen/spacing_sm" android:background="@drawable/bg_home_row" android:gravity="center_vertical" android:paddingHorizontal="@dimen/spacing_lg" android:text="Isha · 9:02 PM                                      ●" android:textColor="@color/text_primary" android:textStyle="bold" />
+        <TextView style="@style/TextAppearance.App.BodyPrimary" android:layout_width="match_parent" android:layout_height="64dp" android:layout_marginTop="@dimen/spacing_sm" android:background="@drawable/bg_home_row" android:gravity="center_vertical" android:paddingHorizontal="@dimen/spacing_lg" android:text="Tahajjud · 3:10 AM\nOptional · +2 pts bonus" android:textColor="@color/text_primary" android:textStyle="bold" />
+
+        <TextView
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:letterSpacing="0.12"
+            android:text="ADHAN SOUND"
+            android:textStyle="bold" />
+
+        <TextView style="@style/TextAppearance.App.BodyPrimary" android:layout_width="match_parent" android:layout_height="64dp" android:layout_marginTop="@dimen/spacing_md" android:background="@drawable/bg_quote_card" android:gravity="center_vertical" android:paddingHorizontal="@dimen/spacing_lg" android:text="🕌  Adhan Makkah                 ▶ Play\nCurrently selected" android:textColor="@color/text_primary" android:textStyle="bold" />
+        <TextView style="@style/TextAppearance.App.BodyPrimary" android:layout_width="match_parent" android:layout_height="54dp" android:layout_marginTop="@dimen/spacing_sm" android:background="@drawable/bg_home_row" android:gravity="center_vertical" android:paddingHorizontal="@dimen/spacing_lg" android:text="🕌  Adhan Madinah                              ▶" android:textColor="@color/text_primary" android:textStyle="bold" />
+        <TextView style="@style/TextAppearance.App.BodyPrimary" android:layout_width="match_parent" android:layout_height="54dp" android:layout_marginTop="@dimen/spacing_sm" android:background="@drawable/bg_home_row" android:gravity="center_vertical" android:paddingHorizontal="@dimen/spacing_lg" android:text="🔔  Subtle chime                                ▶" android:textColor="@color/text_primary" android:textStyle="bold" />
+        <TextView style="@style/TextAppearance.App.BodyPrimary" android:layout_width="match_parent" android:layout_height="54dp" android:layout_marginTop="@dimen/spacing_sm" android:background="@drawable/bg_home_row" android:gravity="center_vertical" android:paddingHorizontal="@dimen/spacing_lg" android:text="🔕  Silent                                            −" android:textColor="@color/text_primary" android:textStyle="bold" />
+
+        <TextView
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:letterSpacing="0.12"
+            android:text="EVENING REMINDER"
+            android:textStyle="bold" />
+
+        <TextView style="@style/TextAppearance.App.BodyPrimary" android:layout_width="match_parent" android:layout_height="70dp" android:layout_marginTop="@dimen/spacing_md" android:background="@drawable/bg_home_row" android:gravity="center_vertical" android:paddingHorizontal="@dimen/spacing_lg" android:text="📝  Nightly log reminder                         ●\nNudge at 10 PM if activities unlogged" android:textColor="@color/text_primary" android:textStyle="bold" />
+    </LinearLayout>
+</ScrollView>

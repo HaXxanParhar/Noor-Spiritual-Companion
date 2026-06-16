@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_app"
+    android:paddingTop="40dp"
+    android:paddingBottom="10dp"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/screen_padding">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_lg">
+
+            <TextView
+                style="@style/TextAppearance.App.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="9:41"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xl"
+                android:background="@drawable/bg_guest_banner"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/spacing_lg">
+
+                <TextView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="👤"
+                    android:textSize="22sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_md"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/TextAppearance.App.Caption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/guest_mode_title"
+                        android:textColor="@color/gold_primary"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        style="@style/TextAppearance.App.CaptionSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_xs"
+                        android:text="@string/guest_mode_subtitle" />
+                </LinearLayout>
+
+                <TextView
+                    style="@style/TextAppearance.App.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/guest_mode_action"
+                    android:textColor="@color/gold_primary"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="@dimen/spacing_xl"
+                android:gravity="center"
+                android:text="🔒"
+                android:textSize="26sp" />
+
+            <TextView
+                style="@style/TextAppearance.App.Heading2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/guest_locked_title" />
+
+            <TextView
+                style="@style/TextAppearance.App.BodySecondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:gravity="center"
+                android:text="@string/guest_locked_body" />
+
+            <TextView
+                android:id="@+id/continueGoogleTextView"
+                style="@style/TextAppearance.App.Button"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:layout_marginTop="@dimen/spacing_xl"
+                android:background="@drawable/bg_primary_action"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:text="@string/login_continue_google" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

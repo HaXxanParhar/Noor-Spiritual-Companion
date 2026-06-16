@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_app"
+    android:fillViewport="true"
+    android:overScrollMode="never">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/spacing_lg"
+        android:paddingTop="40dp"
+        android:paddingBottom="@dimen/spacing_2xl">
+
+        <TextView
+            android:id="@+id/backTextView"
+            style="@style/TextAppearance.App.Heading1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_back" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/logo_size"
+                android:layout_height="@dimen/logo_size"
+                android:background="@drawable/bg_logo_mark"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/noor_logo_main" />
+
+            <TextView
+                style="@style/TextAppearance.App.Arabic"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="-40dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="50sp"
+                android:text="@string/app_name_arabic"
+                android:textColor="@color/gold_primary" />
+
+            <TextView
+                style="@style/TextAppearance.App.Display"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="-20dp"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name" />
+
+            <TextView
+                style="@style/TextAppearance.App.BodySecondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:gravity="center"
+                android:text="@string/about_hero_subtitle" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:background="@drawable/bg_home_card"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_lg">
+
+            <TextView
+                style="@style/TextAppearance.App.Heading2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/about_section_why_title"
+                android:textColor="@color/gold_primary" />
+
+            <TextView
+                style="@style/TextAppearance.App.BodyPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:lineSpacingExtra="4dp"
+                android:text="@string/about_section_why_body"
+                android:textColor="@color/text_primary" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_md"
+            android:background="@drawable/bg_home_card"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_lg">
+
+            <TextView
+                style="@style/TextAppearance.App.Heading2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/about_section_intention_title"
+                android:textColor="@color/gold_primary" />
+
+            <TextView
+                style="@style/TextAppearance.App.BodyPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:lineSpacingExtra="4dp"
+                android:text="@string/about_section_intention_body"
+                android:textColor="@color/text_primary" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_md"
+            android:background="@drawable/bg_home_card"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_lg">
+
+            <TextView
+                style="@style/TextAppearance.App.Heading2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/about_section_together_title"
+                android:textColor="@color/gold_primary" />
+
+            <TextView
+                style="@style/TextAppearance.App.BodyPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:lineSpacingExtra="4dp"
+                android:text="@string/about_section_together_body"
+                android:textColor="@color/text_primary" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_lg"
+            android:background="@drawable/bg_quote_card"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_lg">
+
+            <TextView
+                style="@style/TextAppearance.App.Arabic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/onboarding_hadith_arabic" />
+
+            <TextView
+                style="@style/TextAppearance.App.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:gravity="center"
+                android:text="@string/onboarding_hadith_translation"
+                android:textColor="@color/text_secondary"
+                android:textStyle="italic" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:background="@drawable/bg_home_card"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_xl">
+
+            <TextView
+                style="@style/TextAppearance.App.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/about_footer_line"
+                android:textColor="@color/text_muted" />
+
+            <TextView
+                style="@style/TextAppearance.App.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/about_footer_line2"
+                android:textColor="@color/text_muted" />
+
+            <TextView
+                style="@style/TextAppearance.App.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="💖"
+                android:textSize="40dp" />
+
+
+            <TextView
+                style="@style/TextAppearance.App.CaptionSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:letterSpacing="0.08"
+                android:text="@string/about_developer_label"
+                android:textAllCaps="true"
+                android:textColor="@color/text_muted"
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/TextAppearance.App.Heading2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/about_developer_name"
+                android:textColor="@color/gold_primary" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

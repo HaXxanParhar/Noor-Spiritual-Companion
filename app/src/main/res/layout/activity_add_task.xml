@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_app"
+    android:fillViewport="true"
+    android:paddingTop="40dp"
+    android:paddingBottom="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_lg">
+
+        <TextView
+            android:id="@+id/backTextView"
+            style="@style/TextAppearance.App.Heading1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="←  Add Task" />
+
+        <TextView
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:text="TASK NAME"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/taskNameEditText"
+            style="@style/TextAppearance.App.Input"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:background="@drawable/bg_input"
+            android:hint="Enter task name"
+            android:inputType="textCapWords"
+            android:textColorHint="@color/text_muted" />
+
+        <TextView
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_lg"
+            android:text="CATEGORY"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/categorySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:background="@drawable/bg_input" />
+
+        <TextView
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_lg"
+            android:text="TASK POINTS"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/taskPointsEditText"
+            style="@style/TextAppearance.App.Input"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:text="1"
+            android:background="@drawable/bg_input"
+            android:hint="Enter points"
+            android:inputType="number"
+            android:textColorHint="@color/text_muted" />
+
+        <TextView
+            android:id="@+id/statusTextView"
+            style="@style/TextAppearance.App.Caption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_lg"
+            android:text="Loading categories..." />
+
+        <TextView
+            android:id="@+id/addTaskTextView"
+            style="@style/TextAppearance.App.Button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:background="@drawable/bg_primary_action"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="Add Task" />
+    </LinearLayout>
+</ScrollView>

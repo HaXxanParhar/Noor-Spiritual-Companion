@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "130662347136",
+    "firebase_url": "https://noor-spiritual-companion-88494-default-rtdb.firebaseio.com",
+    "project_id": "noor-spiritual-companion-88494",
+    "storage_bucket": "noor-spiritual-companion-88494.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:130662347136:android:a1e8da378236430b2a1165",
+        "android_client_info": {
+          "package_name": "com.parhar.noor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "130662347136-kgruja7vt0nlge8h5itn1s00t4hrb94d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.parhar.noor",
+            "certificate_hash": "ca4b6bd01a8614ae09e78941d2204ee2f4f6697b"
+          }
+        },
+        {
+          "client_id": "130662347136-dqmid5i9rpep5gj2lv02a87m6m6s7o05.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7RFlkIuQFoz32HwmeWFjgtO76FJfvst4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "130662347136-dqmid5i9rpep5gj2lv02a87m6m6s7o05.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

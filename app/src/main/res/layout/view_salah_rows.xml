@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/fajrPrayerRow"
+        style="@style/TextAppearance.App.BodyPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/bg_home_row"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/spacing_lg"
+        android:text="●  Fajr     فجر     4:21 AM      ✓ Prayed"
+        android:textColor="@color/text_secondary"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/sunrisePrayerRow"
+        style="@style/TextAppearance.App.BodyPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="@dimen/spacing_sm"
+        android:background="@drawable/bg_home_row"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/spacing_lg"
+        android:text="●  Sunrise        5:52 AM"
+        android:textColor="@color/text_muted"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/zuhrPrayerRow"
+        style="@style/TextAppearance.App.BodyPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_marginTop="@dimen/spacing_sm"
+        android:background="@drawable/bg_donation_selected"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/spacing_lg"
+        android:text="●  Zuhr     ظهر     12:48 PM       Next 🔔"
+        android:textColor="@color/text_primary"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/asrPrayerRow"
+        style="@style/TextAppearance.App.BodyPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="@dimen/spacing_sm"
+        android:background="@drawable/bg_home_row"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/spacing_lg"
+        android:text="●  Asr     عصر     4:17 PM"
+        android:textColor="@color/text_primary"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/maghribPrayerRow"
+        style="@style/TextAppearance.App.BodyPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="@dimen/spacing_sm"
+        android:background="@drawable/bg_home_row"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/spacing_lg"
+        android:text="●  Maghrib     مغرب     7:24 PM"
+        android:textColor="@color/text_primary"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/ishaPrayerRow"
+        style="@style/TextAppearance.App.BodyPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="@dimen/spacing_sm"
+        android:background="@drawable/bg_home_row"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/spacing_lg"
+        android:text="●  Isha     عشاء     9:02 PM"
+        android:textColor="@color/text_primary"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tahajjudPrayerRow"
+        style="@style/TextAppearance.App.BodyPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_marginTop="@dimen/spacing_sm"
+        android:background="@drawable/bg_home_row"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/spacing_lg"
+        android:text="●  Tahajjud     تهجد     3:10 AM        +2 pts ✨"
+        android:textColor="@color/text_primary"
+        android:textStyle="bold" />
+</LinearLayout>

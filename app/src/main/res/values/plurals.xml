@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="home_task_points">
+        <item quantity="one">+%d pt</item>
+        <item quantity="other">+%d pts</item>
+    </plurals>
+    <plurals name="home_points_info">
+        <item quantity="one">You have earned %d point for today.</item>
+        <item quantity="other">You have earned %d points for today.</item>
+    </plurals>
+</resources>

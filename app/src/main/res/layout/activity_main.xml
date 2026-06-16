@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_app"
+    android:orientation="vertical"
+    android:paddingTop="40dp"
+    android:paddingBottom="10dp">
+
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="92dp" />
+
+    <LinearLayout
+        android:id="@+id/pointsInfoContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/spacing_lg"
+        android:alpha="1"
+        android:background="@drawable/bg_points_info"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/spacing_lg"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tvEmoji"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:gravity="center"
+            android:text="👏"
+            android:textSize="40sp" />
+
+        <TextView
+            android:id="@+id/pointsInfoTextView"
+            style="@style/TextAppearance.App.BodyPrimary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_weight="1"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_nav_height"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="@dimen/screen_padding"
+        android:background="@drawable/bg_bottom_nav"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/spacing_sm">
+
+        <TextView
+            android:id="@+id/homeTabTextView"
+            style="@style/TextAppearance.App.BottomNavigation"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="🏠\nHome"
+            android:textColor="@color/gold_primary" />
+
+        <TextView
+            android:id="@+id/salahTabTextView"
+            style="@style/TextAppearance.App.BottomNavigation"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="🕌\nSalah"
+            android:textColor="@color/text_muted" />
+
+        <TextView
+            android:id="@+id/boardTabTextView"
+            style="@style/TextAppearance.App.BottomNavigation"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="🏆\nBoard"
+            android:textColor="@color/text_muted" />
+
+        <TextView
+            android:id="@+id/discoverTabTextView"
+            style="@style/TextAppearance.App.BottomNavigation"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="☾\nDiscover"
+            android:textColor="@color/text_muted" />
+
+        <TextView
+            android:id="@+id/moreTabTextView"
+            style="@style/TextAppearance.App.BottomNavigation"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="⚙\nMore"
+            android:textColor="@color/text_muted" />
+    </LinearLayout>
+
+</RelativeLayout>

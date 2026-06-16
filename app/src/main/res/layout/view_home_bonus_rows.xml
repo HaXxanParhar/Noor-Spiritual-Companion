@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/donationRow"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_row_height"
+        android:layout_marginTop="@dimen/spacing_sm"
+        android:background="@drawable/bg_home_row"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/spacing_md">
+
+        <TextView
+            android:layout_width="@dimen/icon_box_size"
+            android:layout_height="@dimen/icon_box_size"
+            android:background="@drawable/bg_icon_box_good"
+            android:gravity="center"
+            android:text="💚" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TextAppearance.App.BodyPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Donation"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/TextAppearance.App.CaptionSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select a range" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="42dp"
+            android:layout_height="30dp"
+            android:background="@drawable/bg_points_chip"
+            android:gravity="center"
+            android:text="@string/points_donation"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="@dimen/spacing_sm"
+            android:background="@drawable/bg_empty_circle" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_row_height"
+        android:layout_marginTop="@dimen/spacing_sm"
+        android:background="@drawable/bg_home_row"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/spacing_md">
+
+        <TextView
+            android:layout_width="@dimen/icon_box_size"
+            android:layout_height="@dimen/icon_box_size"
+            android:background="@drawable/bg_icon_box_good"
+            android:gravity="center"
+            android:text="🫂" />
+
+        <TextView
+            style="@style/TextAppearance.App.BodyPrimary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_weight="1"
+            android:text="Helped someone"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold" />
+
+        <TextView
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="42dp"
+            android:layout_height="30dp"
+            android:background="@drawable/bg_points_chip"
+            android:gravity="center"
+            android:text="@string/points_one"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="@dimen/spacing_sm"
+            android:background="@drawable/bg_empty_circle" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_row_height"
+        android:layout_marginTop="@dimen/spacing_sm"
+        android:background="@drawable/bg_home_row"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/spacing_md">
+
+        <TextView
+            android:layout_width="@dimen/icon_box_size"
+            android:layout_height="@dimen/icon_box_size"
+            android:background="@drawable/bg_icon_box_good"
+            android:gravity="center"
+            android:text="👨‍👩‍👧" />
+
+        <TextView
+            style="@style/TextAppearance.App.BodyPrimary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_weight="1"
+            android:text="Helped parents"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold" />
+
+        <TextView
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="42dp"
+            android:layout_height="30dp"
+            android:background="@drawable/bg_points_chip"
+            android:gravity="center"
+            android:text="@string/points_one"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="@dimen/spacing_sm"
+            android:background="@drawable/bg_empty_circle" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_row_height"
+        android:layout_marginTop="@dimen/spacing_sm"
+        android:background="@drawable/bg_home_row"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/spacing_md">
+
+        <TextView
+            android:layout_width="@dimen/icon_box_size"
+            android:layout_height="@dimen/icon_box_size"
+            android:background="@drawable/bg_icon_box_good"
+            android:gravity="center"
+            android:text="✍️" />
+
+        <TextView
+            style="@style/TextAppearance.App.BodyPrimary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_weight="1"
+            android:text="Taught Quran/Hadith"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold" />
+
+        <TextView
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="42dp"
+            android:layout_height="30dp"
+            android:background="@drawable/bg_points_chip"
+            android:gravity="center"
+            android:text="@string/points_one"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="@dimen/spacing_sm"
+            android:background="@drawable/bg_empty_circle" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_row_height"
+        android:layout_marginTop="@dimen/spacing_sm"
+        android:background="@drawable/bg_home_row"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/spacing_md">
+
+        <TextView
+            android:layout_width="@dimen/icon_box_size"
+            android:layout_height="@dimen/icon_box_size"
+            android:background="@drawable/bg_icon_box"
+            android:gravity="center"
+            android:text="☮" />
+
+        <TextView
+            style="@style/TextAppearance.App.BodyPrimary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_weight="1"
+            android:text="Said Assalamu Alaikum"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold" />
+
+        <TextView
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="42dp"
+            android:layout_height="30dp"
+            android:background="@drawable/bg_points_chip"
+            android:gravity="center"
+            android:text="@string/points_one"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="@dimen/spacing_sm"
+            android:background="@drawable/bg_empty_circle" />
+    </LinearLayout>
+</LinearLayout>

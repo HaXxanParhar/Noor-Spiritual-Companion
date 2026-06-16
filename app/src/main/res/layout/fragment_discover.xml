@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_app"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_lg">
+
+    <TextView
+        style="@style/TextAppearance.App.Heading1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/discover_title" />
+
+    <TextView android:id="@+id/dailyDuaTextView" style="@style/TextAppearance.App.BodyPrimary" android:layout_width="match_parent" android:layout_height="76dp" android:layout_marginTop="@dimen/spacing_lg" android:background="@drawable/bg_home_row" android:clickable="true" android:focusable="true" android:gravity="center_vertical" android:paddingHorizontal="@dimen/spacing_lg" android:text="🌅  Daily Duas\nMorning, evening and nightly duas" android:textColor="@color/text_primary" android:textStyle="bold" />
+    <TextView android:id="@+id/daroodTextView" style="@style/TextAppearance.App.BodyPrimary" android:layout_width="match_parent" android:layout_height="76dp" android:layout_marginTop="@dimen/spacing_md" android:background="@drawable/bg_home_row" android:clickable="true" android:focusable="true" android:gravity="center_vertical" android:paddingHorizontal="@dimen/spacing_lg" android:text="💜  Darood\nArabic salawat with translations" android:textColor="@color/text_primary" android:textStyle="bold" />
+    <TextView android:id="@+id/tasbihTextView" style="@style/TextAppearance.App.BodyPrimary" android:layout_width="match_parent" android:layout_height="76dp" android:layout_marginTop="@dimen/spacing_md" android:background="@drawable/bg_home_row" android:clickable="true" android:focusable="true" android:gravity="center_vertical" android:paddingHorizontal="@dimen/spacing_lg" android:text="📿  Tasbih Counter\nCount dhikr with preset targets" android:textColor="@color/text_primary" android:textStyle="bold" />
+</LinearLayout>

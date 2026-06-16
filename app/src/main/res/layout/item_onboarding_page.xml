@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:overScrollMode="never">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minHeight="520dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/spacing_xl"
+        android:paddingVertical="@dimen/spacing_2xl">
+
+        <ImageView
+            android:id="@+id/logoTextView"
+            android:layout_width="@dimen/logo_size"
+            android:layout_height="@dimen/logo_size"
+            android:background="@drawable/bg_logo_mark"
+            android:gravity="center"
+            android:scaleType="centerCrop"
+            android:src="@drawable/noor_logo_main" />
+
+        <TextView
+            android:id="@+id/titleTextView"
+            style="@style/TextAppearance.App.Display"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:gravity="center"
+            android:text="@string/onboarding_title_welcome" />
+
+        <TextView
+            android:id="@+id/bodyTextView"
+            style="@style/TextAppearance.App.BodyPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_md"
+            android:gravity="center"
+            android:text="@string/onboarding_body_welcome" />
+
+        <TextView
+            android:id="@+id/pointsTextView"
+            style="@style/TextAppearance.App.Caption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:background="@drawable/bg_secondary_action"
+            android:gravity="center"
+            android:padding="@dimen/spacing_md"
+            android:text="@string/onboarding_points_summary"
+            android:textColor="@color/text_primary"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/quoteContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:background="@drawable/bg_quote_card"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_lg"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/quoteArabicTextView"
+                style="@style/TextAppearance.App.Arabic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/onboarding_hadith_arabic" />
+
+            <TextView
+                style="@style/TextAppearance.App.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:gravity="center"
+                android:text="@string/onboarding_hadith_translation"
+                android:textStyle="italic" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

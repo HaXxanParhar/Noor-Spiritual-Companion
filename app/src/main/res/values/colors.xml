@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="navy_base">#0D0F1A</color>
+    <color name="navy_base_deep">#080A13</color>
+    <color name="card_surface">#13162A</color>
+    <color name="card_surface_soft">#1A1E36</color>
+    <color name="card_stroke">#2B304A</color>
+    <color name="gold_primary">#FCC040</color>
+    <color name="gold_primary_dark">#DFA323</color>
+    <color name="teal_quran_salah">#34D1BF</color>
+    <color name="rose_dua">#F472B6</color>
+    <color name="violet_darood">#A78BFA</color>
+    <color name="green_bonus">#4ADE80</color>
+    <color name="green_surface">#12362F</color>
+    <color name="orange_tahajjud">#FB923C</color>
+    <color name="streak_surface">#2B2305</color>
+    <color name="silver_medal">#B8BDC9</color>
+    <color name="bronze_medal">#B87333</color>
+    <color name="podium_first">#3A2C08</color>
+    <color name="podium_second">#2A2D3A</color>
+    <color name="podium_third">#342518</color>
+    <color name="locked_ring">#3C425A</color>
+    <color name="text_primary">#F8FAFC</color>
+    <color name="text_secondary">#AAB1C8</color>
+    <color name="text_muted">#727A94</color>
+    <color name="overlay_soft">#66000000</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>
