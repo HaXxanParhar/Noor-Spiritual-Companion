@@ -1,5 +1,6 @@
 package com.parhar.noor.ui.discover
 
+import com.parhar.noor.R
 import com.parhar.noor.databinding.ActivityTasbihCounterBinding
 import com.parhar.noor.utils.BaseActivity
 
@@ -11,7 +12,8 @@ class TasbihCounterActivity : BaseActivity<ActivityTasbihCounterBinding>() {
         ActivityTasbihCounterBinding.inflate(layoutInflater)
 
     override fun setupViews() {
-        binding.backTextView.setOnClickListener { finish() }
+        binding.toolbar.backImageView.setOnClickListener { finish() }
+        binding.toolbar.toolbarTitleTextView.setText(R.string.tasbih_title)
         binding.tapTextView.setOnClickListener {
             count += 1
             renderCount()

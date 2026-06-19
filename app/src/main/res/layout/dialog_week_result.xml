@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_home_card"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_xl">
+
+    <TextView
+        android:id="@+id/weekTitleTextView"
+        style="@style/TextAppearance.App.Heading2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/text_primary"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/weekPointsTextView"
+        style="@style/TextAppearance.App.BodyPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_lg"
+        android:gravity="center"
+        android:textColor="@color/text_primary" />
+
+    <TextView
+        android:id="@+id/weekPositionTextView"
+        style="@style/TextAppearance.App.Heading1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_md"
+        android:gravity="center"
+        android:textColor="@color/gold_primary"
+        android:textSize="42sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/weekMedalTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_md"
+        android:textSize="56sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/weekCongratsTextView"
+        style="@style/TextAppearance.App.BodyPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_sm"
+        android:gravity="center"
+        android:textColor="@color/gold_primary"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/viewLeaderboardTextView"
+        style="@style/TextAppearance.App.Button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginTop="@dimen/spacing_xl"
+        android:background="@drawable/bg_home_row"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="@string/week_result_view_leaderboard"
+        android:textColor="@color/gold_primary" />
+
+    <TextView
+        android:id="@+id/okayTextView"
+        style="@style/TextAppearance.App.Button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginTop="@dimen/spacing_md"
+        android:background="@drawable/bg_primary_action"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="@string/week_result_okay" />
+</LinearLayout>

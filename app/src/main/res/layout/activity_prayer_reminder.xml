@@ -13,12 +13,9 @@
         android:orientation="vertical"
         android:padding="@dimen/spacing_lg">
 
-        <TextView
-            android:id="@+id/backTextView"
-            style="@style/TextAppearance.App.Heading1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="←  Prayer Reminders 🔔" />
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_activity_toolbar" />
 
         <TextView
             style="@style/TextAppearance.App.CaptionSmall"

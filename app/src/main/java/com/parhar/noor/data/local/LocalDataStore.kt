@@ -7,6 +7,7 @@ import com.parhar.noor.data.local.dao.FriendDao
 import com.parhar.noor.data.local.dao.SyncMetadataDao
 import com.parhar.noor.data.local.dao.TaskDefinitionDao
 import com.parhar.noor.data.local.dao.UserDao
+import com.parhar.noor.data.local.dao.UserPreferencesDao
 import com.parhar.noor.data.local.entity.CategoryEntity
 import com.parhar.noor.data.local.entity.DailyTaskEntryEntity
 import com.parhar.noor.data.local.entity.FavoriteBannerEntity
@@ -14,6 +15,7 @@ import com.parhar.noor.data.local.entity.FriendEntity
 import com.parhar.noor.data.local.entity.SyncMetadataEntity
 import com.parhar.noor.data.local.entity.TaskDefinitionEntity
 import com.parhar.noor.data.local.entity.UserEntity
+import com.parhar.noor.data.local.entity.UserPreferencesEntity
 import com.parhar.noor.data.local.mapper.DailyTaskSerializer
 import com.parhar.noor.data.remote.dto.RemoteCategory
 import com.parhar.noor.data.remote.dto.RemoteFavoriteInfo
@@ -28,6 +30,7 @@ class LocalDataStore(
     private val dailyTaskEntryDao: DailyTaskEntryDao,
     private val favoriteBannerDao: FavoriteBannerDao,
     private val syncMetadataDao: SyncMetadataDao,
+    private val userPreferencesDao: UserPreferencesDao,
 ) {
 
     suspend fun upsertRemoteUser(profile: RemoteUserProfile, remoteUpdatedAt: Long) {
@@ -50,6 +53,8 @@ class LocalDataStore(
                     categoryKey = category.category.lowercase(),
                     categoryName = category.category,
                     title = category.title.ifBlank { category.category },
+                    description = category.description,
+                    position = category.position,
                     updatedAt = remoteUpdatedAt,
                     syncStatus = SyncStatus.SYNCED,
                 )
@@ -66,7 +71,8 @@ class LocalDataStore(
                     category = task.category,
                     name = task.name,
                     points = task.points,
-                    sortOrder = task.id.toLongOrNull() ?: Long.MAX_VALUE,
+                    position = task.position,
+                    emoji = task.emoji,
                     updatedAt = remoteUpdatedAt,
                     syncStatus = SyncStatus.SYNCED,
                 )
@@ -168,6 +174,13 @@ class LocalDataStore(
         email = email,
         name = name,
         gender = gender,
+        avatarText = avatar?.text.orEmpty(),
+        avatarBg = avatar?.bg.orEmpty(),
+        avatarBorder = avatar?.border.orEmpty(),
+        avatarStyle = avatar?.style.orEmpty(),
+        createdAt = createdAt,
+        privacyTasksToday = privacy?.tasksToday.orEmpty().ifBlank { "private" },
+        privacyTasksHistory = privacy?.tasksHistory.orEmpty().ifBlank { "private" },
         updatedAt = remoteUpdatedAt,
         syncStatus = SyncStatus.SYNCED,
     )

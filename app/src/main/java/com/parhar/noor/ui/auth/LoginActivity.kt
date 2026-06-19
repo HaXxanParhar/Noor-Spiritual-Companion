@@ -10,6 +10,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.parhar.noor.R
+import com.parhar.noor.data.notifications.FcmTokenManager
 import com.parhar.noor.data.user.UserProfile
 import com.parhar.noor.databinding.ActivityLoginBinding
 import com.parhar.noor.di.appContainer
@@ -61,6 +62,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
     private fun handleGoogleSignInResult(data: Intent?) {
         lifecycleScope.launch {
+            setBlockingLoading(true, getString(R.string.login_signing_in))
             runCatching {
                 val account = GoogleSignIn.getSignedInAccountFromIntent(data).await()
                 val credential = GoogleAuthProvider.getCredential(account.idToken, null)
@@ -68,6 +70,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             }.onSuccess {
                 routeAfterGoogleSignIn()
             }.onFailure { throwable ->
+                setBlockingLoading(false)
                 Toast.makeText(
                     this@LoginActivity,
                     throwable.message ?: "Google sign-in failed.",
@@ -78,8 +81,12 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     }
 
     private suspend fun routeAfterGoogleSignIn() {
+        setBlockingLoading(true, getString(R.string.login_preparing_account))
         val uid = auth.currentUser?.uid.orEmpty()
-        if (uid.isBlank()) return
+        if (uid.isBlank()) {
+            setBlockingLoading(false)
+            return
+        }
 
         val profileExists = appContainer.userProfileRepository.userExists(uid)
         if (profileExists) {
@@ -103,6 +110,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                     ),
                 )
             }
+            FcmTokenManager.registerToken(appContainer.userProfileRepository, uid)
             openSplash()
         } else {
             openCreateAccount()

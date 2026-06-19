@@ -8,48 +8,27 @@
     android:paddingTop="40dp"
     android:paddingBottom="10dp">
 
-    <TextView
-        style="@style/TextAppearance.App.Heading1"
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/layout_activity_toolbar" />
+
+    <include
+        android:id="@+id/tasksTextView"
+        layout="@layout/layout_more_menu_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Admin Panel" />
+        android:layout_marginTop="@dimen/spacing_xl" />
 
-    <TextView
-        android:id="@+id/tasksTextView"
-        style="@style/TextAppearance.App.BodyPrimary"
+    <include
+        android:id="@+id/categoriesTextView"
+        layout="@layout/layout_more_menu_row"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_marginTop="@dimen/spacing_xl"
-        android:background="@drawable/bg_home_row"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="@dimen/spacing_lg"
-        android:text="Tasks                                      ›"
-        android:textColor="@color/text_primary"
-        android:textStyle="bold" />
+        android:layout_height="wrap_content" />
 
-    <TextView
-        style="@style/TextAppearance.App.BodyPrimary"
+    <include
+        android:id="@+id/trophiesTextView"
+        layout="@layout/layout_more_menu_row"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_marginTop="@dimen/spacing_sm"
-        android:background="@drawable/bg_home_row"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="@dimen/spacing_lg"
-        android:text="Medals"
-        android:textColor="@color/text_primary"
-        android:textStyle="bold" />
+        android:layout_height="wrap_content" />
 
-    <TextView
-        style="@style/TextAppearance.App.BodyPrimary"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_marginTop="@dimen/spacing_sm"
-        android:background="@drawable/bg_home_row"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="@dimen/spacing_lg"
-        android:text="Trophies"
-        android:textColor="@color/text_primary"
-        android:textStyle="bold" />
 </LinearLayout>

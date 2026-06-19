@@ -39,8 +39,50 @@ class FirebaseCatalogRemoteDataSource(
                     CATEGORY_FIELD to task.category,
                     NAME_FIELD to task.name,
                     POINTS_FIELD to task.points,
+                    POSITION_FIELD to task.position,
+                    EMOJI_FIELD to task.emoji,
                 ),
             )
+            .await()
+    }
+
+    override suspend fun deleteTaskDefinition(category: String, taskId: String) {
+        database.reference
+            .child(TASKS_NODE)
+            .child(category)
+            .child(taskId)
+            .removeValue()
+            .await()
+    }
+
+    override suspend fun pushCategory(category: RemoteCategory) {
+        database.reference
+            .child(CATEGORIES_NODE)
+            .child(category.id)
+            .setValue(
+                mapOf(
+                    CATEGORY_FIELD to category.category,
+                    TITLE_FIELD to category.title,
+                    DESCRIPTION_FIELD to category.description,
+                    POSITION_FIELD to category.position,
+                ),
+            )
+            .await()
+    }
+
+    override suspend fun deleteCategory(categoryId: String) {
+        database.reference
+            .child(CATEGORIES_NODE)
+            .child(categoryId)
+            .removeValue()
+            .await()
+    }
+
+    override suspend fun deleteTasksForCategory(category: String) {
+        database.reference
+            .child(TASKS_NODE)
+            .child(category)
+            .removeValue()
             .await()
     }
 
@@ -95,6 +137,8 @@ class FirebaseCatalogRemoteDataSource(
             id = key.orEmpty(),
             category = category,
             title = child(TITLE_FIELD).getValue(String::class.java).orEmpty(),
+            description = child(DESCRIPTION_FIELD).getValue(String::class.java).orEmpty(),
+            position = child(POSITION_FIELD).getValue(Int::class.java) ?: 0,
         )
     }
 
@@ -108,6 +152,8 @@ class FirebaseCatalogRemoteDataSource(
                 .ifBlank { categoryName },
             name = name,
             points = child(POINTS_FIELD).getValue(Int::class.java) ?: 0,
+            position = child(POSITION_FIELD).getValue(Int::class.java) ?: 0,
+            emoji = child(EMOJI_FIELD).getValue(String::class.java).orEmpty(),
         )
     }
 
@@ -121,6 +167,9 @@ class FirebaseCatalogRemoteDataSource(
         private const val CATEGORY_FIELD = "category"
         private const val NAME_FIELD = "name"
         private const val POINTS_FIELD = "points"
+        private const val POSITION_FIELD = "position"
+        private const val EMOJI_FIELD = "emoji"
         private const val TITLE_FIELD = "title"
+        private const val DESCRIPTION_FIELD = "description"
     }
 }

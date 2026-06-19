@@ -15,7 +15,8 @@ data class TaskDefinitionEntity(
     val category: String,
     val name: String,
     val points: Int = 0,
-    @ColumnInfo(name = "sort_order") val sortOrder: Long = 0,
+    val position: Int = 0,
+    val emoji: String = "",
     @ColumnInfo(name = "updated_at") val updatedAt: Long,
     @ColumnInfo(name = "sync_status") val syncStatus: SyncStatus = SyncStatus.SYNCED,
 )

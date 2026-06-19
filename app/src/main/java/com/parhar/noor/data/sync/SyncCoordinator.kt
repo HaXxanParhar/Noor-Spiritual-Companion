@@ -14,11 +14,14 @@ import com.parhar.noor.data.local.entity.SyncOutboxEntity
 import com.parhar.noor.data.local.entity.TaskDefinitionEntity
 import com.parhar.noor.data.local.entity.UserEntity
 import com.parhar.noor.data.local.mapper.DailyTaskSerializer
+import com.parhar.noor.data.local.mapper.EntityMappers.toDomain
+import com.parhar.noor.data.local.mapper.EntityMappers.toEntity
 import com.parhar.noor.data.remote.CatalogRemoteDataSource
 import com.parhar.noor.data.remote.UserRemoteDataSource
 import com.parhar.noor.data.remote.dto.AddFriendPayload
 import com.parhar.noor.data.remote.dto.AddTaskDefPayload
 import com.parhar.noor.data.remote.dto.DailyTasksPayload
+import com.parhar.noor.data.remote.dto.RemoteCategory
 import com.parhar.noor.data.remote.dto.RemoteTaskDefinition
 import com.parhar.noor.data.remote.dto.RemoteUserProfile
 import kotlinx.coroutines.CoroutineScope
@@ -171,6 +174,131 @@ class SyncCoordinator(
         }
     }
 
+    suspend fun pushTaskDefinitionNow(
+        task: RemoteTaskDefinition,
+        originalCategory: String? = null,
+    ) {
+        if (!connectivityMonitor.checkOnline()) {
+            throw IllegalStateException("No internet connection.")
+        }
+        originalCategory?.let { oldCategory ->
+            catalogRemote.deleteTaskDefinition(oldCategory, task.id)
+        }
+        catalogRemote.pushTaskDefinition(task)
+    }
+
+    fun pushTaskPositionUpdatesInBackground(
+        updates: List<RemoteTaskDefinition>,
+        categoryMove: Pair<RemoteTaskDefinition, String>? = null,
+    ) {
+        scope.launch {
+            runCatching {
+                if (!connectivityMonitor.checkOnline()) {
+                    throw IllegalStateException("No internet connection.")
+                }
+                updates.forEach { task ->
+                    catalogRemote.pushTaskDefinition(task)
+                }
+                categoryMove?.let { (task, originalCategory) ->
+                    catalogRemote.deleteTaskDefinition(originalCategory, task.id)
+                    catalogRemote.pushTaskDefinition(task)
+                }
+            }
+        }
+    }
+
+    suspend fun pushCategoryNow(category: RemoteCategory) {
+        if (!connectivityMonitor.checkOnline()) {
+            throw IllegalStateException("No internet connection.")
+        }
+        catalogRemote.pushCategory(category)
+    }
+
+    fun pushCategoryPositionUpdatesInBackground(categories: List<RemoteCategory>) {
+        scope.launch {
+            runCatching {
+                if (!connectivityMonitor.checkOnline()) {
+                    throw IllegalStateException("No internet connection.")
+                }
+                categories.forEach { category ->
+                    catalogRemote.pushCategory(category)
+                }
+            }
+        }
+    }
+
+    suspend fun deleteTasksForCategoryNow(categoryName: String) {
+        if (!connectivityMonitor.checkOnline()) {
+            throw IllegalStateException("No internet connection.")
+        }
+        catalogRemote.deleteTasksForCategory(categoryName)
+    }
+
+    suspend fun renameCategoryTasksNow(
+        originalCategoryName: String,
+        newCategoryName: String,
+        tasks: List<RemoteTaskDefinition>,
+    ) {
+        if (!connectivityMonitor.checkOnline()) {
+            throw IllegalStateException("No internet connection.")
+        }
+        tasks.forEach { task ->
+            catalogRemote.pushTaskDefinition(task)
+        }
+        catalogRemote.deleteTasksForCategory(originalCategoryName)
+    }
+
+    suspend fun deleteCategoryWithTasksNow(
+        categoryId: String,
+        categoryName: String,
+        taskIds: List<String>,
+    ) {
+        if (!connectivityMonitor.checkOnline()) {
+            throw IllegalStateException("No internet connection.")
+        }
+        purgeTaskIdsFromUsers(taskIds)
+        catalogRemote.deleteTasksForCategory(categoryName)
+        catalogRemote.deleteCategory(categoryId)
+    }
+
+    private suspend fun purgeTaskIdsFromUsers(taskIds: List<String>) {
+        if (taskIds.isEmpty()) return
+        val taskIdSet = taskIds.toSet()
+        val now = System.currentTimeMillis()
+
+        val userUids = buildSet {
+            dailyTaskEntryDao.getDistinctUserUids().forEach { add(it) }
+            userDao.getAll().forEach { add(it.uid) }
+        }
+
+        userUids.forEach { userUid ->
+            val history = runCatching { userRemote.fetchUserTaskHistory(userUid) }.getOrNull()
+                ?: return@forEach
+            history.forEach { (dateKey, rawValue) ->
+                val originalEntries = DailyTaskSerializer.parse(userUid, dateKey, rawValue, now)
+                val entries = originalEntries.filter { entry -> entry.taskId !in taskIdSet }
+                if (entries.size != originalEntries.size) {
+                    val serialized = DailyTaskSerializer.serialize(entries)
+                    userRemote.pushDailyTaskString(userUid, dateKey, serialized)
+                    dailyTaskEntryDao.upsertAll(
+                        entries.map { entry ->
+                            entry.copy(updatedAt = now, syncStatus = SyncStatus.SYNCED)
+                        },
+                    )
+                }
+            }
+        }
+
+        dailyTaskEntryDao.deleteByTaskIds(taskIds)
+    }
+
+    suspend fun deleteTaskDefinitionNow(category: String, taskId: String) {
+        if (!connectivityMonitor.checkOnline()) {
+            throw IllegalStateException("No internet connection.")
+        }
+        catalogRemote.deleteTaskDefinition(category, taskId)
+    }
+
     private suspend fun pushDailyTasks(entry: SyncOutboxEntity) {
         val payload = gson.fromJson(entry.payloadJson, DailyTasksPayload::class.java)
         val entries = dailyTaskEntryDao.getForDate(payload.userUid, payload.dateKey)
@@ -210,11 +338,7 @@ class SyncCoordinator(
         val profile = gson.fromJson(entry.payloadJson, RemoteUserProfile::class.java)
         userRemote.pushUserProfile(profile)
         userDao.upsert(
-            UserEntity(
-                uid = profile.uid,
-                email = profile.email,
-                name = profile.name,
-                gender = profile.gender,
+            profile.toDomain().toEntity(
                 updatedAt = System.currentTimeMillis(),
                 syncStatus = SyncStatus.SYNCED,
             ),
@@ -228,6 +352,8 @@ class SyncCoordinator(
             category = payload.category,
             name = payload.name,
             points = payload.points,
+            position = payload.position,
+            emoji = payload.emoji,
         )
         catalogRemote.pushTaskDefinition(remote)
         taskDefinitionDao.upsert(
@@ -236,7 +362,8 @@ class SyncCoordinator(
                 category = payload.category,
                 name = payload.name,
                 points = payload.points,
-                sortOrder = payload.taskId.toLongOrNull() ?: System.currentTimeMillis(),
+                position = payload.position,
+                emoji = payload.emoji,
                 updatedAt = System.currentTimeMillis(),
                 syncStatus = SyncStatus.SYNCED,
             ),

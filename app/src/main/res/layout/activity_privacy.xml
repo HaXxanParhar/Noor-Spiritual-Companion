@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_app"
+    android:fillViewport="true"
+    android:paddingTop="40dp"
+    android:paddingBottom="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_lg">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_activity_toolbar" />
+
+        <TextView
+            style="@style/TextAppearance.App.Caption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_lg"
+            android:text="@string/privacy_intro"
+            android:textColor="@color/text_muted" />
+
+        <include
+            android:id="@+id/tasksTodayCard"
+            layout="@layout/layout_privacy_option_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            android:id="@+id/tasksHistoryCard"
+            layout="@layout/layout_privacy_option_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_lg" />
+
+        <TextView
+            android:id="@+id/savePrivacyTextView"
+            style="@style/TextAppearance.App.Button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:background="@drawable/bg_primary_action"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/privacy_save_changes"
+            android:textColor="@color/navy_base" />
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_app"
+    android:fillViewport="true"
+    android:paddingTop="40dp"
+    android:paddingBottom="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_lg">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_activity_toolbar" />
+
+        <TextView
+            android:id="@+id/avatarPreviewTextView"
+            android:layout_width="112dp"
+            android:layout_height="112dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:gravity="center"
+            android:textColor="@color/gold_primary"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <TextView
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:text="@string/create_avatar_text_label"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/avatarTextEditText"
+            style="@style/TextAppearance.App.Input"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:background="@drawable/bg_input"
+            android:hint="@string/create_avatar_text_hint"
+            android:inputType="text"
+            android:maxLength="@integer/avatar_text_max_length"
+            android:textColorHint="@color/text_muted" />
+
+        <TextView
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_lg"
+            android:text="@string/create_avatar_bg_label"
+            android:textStyle="bold" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/backgroundPaletteContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
+
+        <TextView
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_lg"
+            android:text="@string/create_avatar_border_label"
+            android:textStyle="bold" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/borderPaletteRow1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/borderPaletteRow2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
+
+        <TextView
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_lg"
+            android:text="@string/create_avatar_style_label"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/styleAmiriTextView"
+            style="@style/TextAppearance.App.BodyPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:background="@drawable/bg_home_row"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="@dimen/spacing_md"
+            android:text="@string/avatar_style_amiri" />
+
+        <TextView
+            android:id="@+id/styleNaskhTextView"
+            style="@style/TextAppearance.App.BodyPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:background="@drawable/bg_home_row"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="@dimen/spacing_md"
+            android:text="@string/avatar_style_naskh" />
+
+        <TextView
+            android:id="@+id/styleLatinTextView"
+            style="@style/TextAppearance.App.BodyPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:background="@drawable/bg_home_row"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="@dimen/spacing_md"
+            android:text="@string/avatar_style_latin" />
+
+        <TextView
+            android:id="@+id/styleNotoNastaliqTextView"
+            style="@style/TextAppearance.App.BodyPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:background="@drawable/bg_home_row"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="@dimen/spacing_md"
+            android:text="@string/avatar_style_noto_nastaliq" />
+
+        <TextView
+            android:id="@+id/styleGulzarTextView"
+            style="@style/TextAppearance.App.BodyPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:background="@drawable/bg_home_row"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="@dimen/spacing_md"
+            android:text="@string/avatar_style_gulzar" />
+
+        <TextView
+            android:id="@+id/styleOutfitMediumTextView"
+            style="@style/TextAppearance.App.BodyPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:background="@drawable/bg_home_row"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="@dimen/spacing_md"
+            android:text="@string/avatar_style_outfit_medium" />
+
+        <TextView
+            android:id="@+id/saveAvatarTextView"
+            style="@style/TextAppearance.App.Button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:background="@drawable/bg_primary_action"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/create_avatar_save_action" />
+    </LinearLayout>
+</ScrollView>

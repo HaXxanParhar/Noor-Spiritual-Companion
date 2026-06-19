@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -18,13 +20,21 @@
             android:gravity="center"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/sectionTitleTextView"
-            style="@style/TextAppearance.App.CaptionSmall"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_sm"
-            android:textStyle="bold" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/sectionTitleTextView"
+                style="@style/TextAppearance.App.CaptionSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                tools:text="Primary Tasks" />
+
+        </LinearLayout>
 
         <View
             android:layout_width="0dp"
@@ -33,6 +43,24 @@
             android:layout_weight="1"
             android:background="@drawable/bg_section_line" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/sectionDescriptionTextView"
+        style="@style/TextAppearance.App.CaptionSmaller"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="-4dp"
+        android:textColor="@color/text_muted"
+        android:visibility="visible"
+        tools:text="Primary Tasks are meant to be completed" />
+
+    <include
+        android:id="@+id/cannotOfferRow"
+        layout="@layout/item_home_cannot_offer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tasksRecyclerView"

@@ -8,12 +8,9 @@
     android:paddingTop="40dp"
     android:paddingBottom="10dp">
 
-    <TextView
-        android:id="@+id/backTextView"
-        style="@style/TextAppearance.App.Heading1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/invite_friends_title" />
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/layout_activity_toolbar" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -1,5 +1,6 @@
 package com.parhar.noor.domain.usecase
 
+import com.parhar.noor.data.local.mapper.DailyTaskKeys
 import com.parhar.noor.domain.model.UserTaskStats
 import com.parhar.noor.utils.TaskStatsCalculator
 import java.text.SimpleDateFormat
@@ -21,12 +22,16 @@ class TaskStatsUseCase {
         mergedHistory[todayKey] = todayTaskPoints
 
         val todayPoints = checkedTaskIds.sumOf { taskId ->
-            todayTaskPoints[taskId] ?: taskPointLookup[taskId] ?: 0
+            if (DailyTaskKeys.isCannotOfferKey(taskId)) {
+                0
+            } else {
+                todayTaskPoints[taskId] ?: taskPointLookup[taskId] ?: 0
+            }
         }.coerceAtLeast(0)
 
         val weeklyPoints = calculateRollingWeeklyPoints(mergedHistory, todayKey)
         val allTimePoints = mergedHistory.values.sumOf { day ->
-            day.values.sumOf { points -> points.coerceAtLeast(0) }
+            DailyTaskKeys.sumPointsForStats(day)
         }
         val streak = TaskStatsCalculator.calculateStreak(mergedHistory, primaryTaskIds, todayKey)
 
@@ -49,7 +54,7 @@ class TaskStatsUseCase {
         var total = 0
         repeat(WEEKLY_DAYS_COUNT) {
             val dateKey = dateFormat.format(calendar.time)
-            total += taskHistory[dateKey].orEmpty().values.sumOf { points -> points.coerceAtLeast(0) }
+            total += DailyTaskKeys.sumPointsForStats(taskHistory[dateKey].orEmpty())
             calendar.add(Calendar.DAY_OF_YEAR, -1)
         }
         return total

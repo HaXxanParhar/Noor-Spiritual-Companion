@@ -50,4 +50,17 @@ interface DailyTaskEntryDao {
 
     @Query("DELETE FROM daily_task_entries WHERE user_uid = :userUid AND date_key = :dateKey")
     suspend fun deleteForDate(userUid: String, dateKey: String)
+
+    @Query(
+        "DELETE FROM daily_task_entries WHERE task_id IN (:taskIds)",
+    )
+    suspend fun deleteByTaskIds(taskIds: List<String>)
+
+    @Query("SELECT DISTINCT user_uid FROM daily_task_entries")
+    suspend fun getDistinctUserUids(): List<String>
+
+    @Query(
+        "DELETE FROM daily_task_entries WHERE user_uid = :userUid AND date_key = :dateKey AND task_id = :taskId",
+    )
+    suspend fun deleteEntry(userUid: String, dateKey: String, taskId: String)
 }

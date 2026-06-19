@@ -1,5 +1,6 @@
 package com.parhar.noor.utils
 
+import com.parhar.noor.data.local.mapper.DailyTaskKeys
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -26,9 +27,7 @@ object TaskStatsCalculator {
         val calendar = Calendar.getInstance()
         calendar.time = dateFormat.parse(todayKey) ?: Date()
 
-        val isTodayComplete = primaryTaskIds.any { taskId ->
-            (taskHistory[todayKey]?.get(taskId) ?: 0) > 0
-        }
+        val isTodayComplete = isPrimaryDayComplete(taskHistory[todayKey].orEmpty(), primaryTaskIds)
         if (!isTodayComplete) {
             calendar.add(Calendar.DAY_OF_YEAR, -1)
         }
@@ -39,9 +38,7 @@ object TaskStatsCalculator {
         while (true) {
             val dateKey = dateFormat.format(checkCalendar.time)
             val dayTasks = taskHistory[dateKey].orEmpty()
-            val isDayComplete = primaryTaskIds.any { taskId ->
-                (dayTasks[taskId] ?: 0) > 0
-            }
+            val isDayComplete = isPrimaryDayComplete(dayTasks, primaryTaskIds)
             if (!isDayComplete) break
             streak++
             checkCalendar.add(Calendar.DAY_OF_YEAR, -1)
@@ -71,9 +68,26 @@ object TaskStatsCalculator {
         taskHistory: Map<String, Map<String, Int>>,
         todayKey: String,
     ): Int {
-        return fridayWeekDateKeys(todayKey).sumOf { dateKey ->
-            taskHistory[dateKey].orEmpty().values.sumOf { points -> points.coerceAtLeast(0) }
+        return calculateWeeklyPointsForDateKeys(taskHistory, fridayWeekDateKeys(todayKey))
+    }
+
+    fun calculateWeeklyPointsForDateKeys(
+        taskHistory: Map<String, Map<String, Int>>,
+        dateKeys: List<String>,
+    ): Int {
+        return dateKeys.sumOf { dateKey ->
+            DailyTaskKeys.sumPointsForStats(taskHistory[dateKey].orEmpty())
         }
+    }
+
+    private fun isPrimaryDayComplete(
+        dayTasks: Map<String, Int>,
+        primaryTaskIds: Set<String>,
+    ): Boolean {
+        if ((dayTasks[DailyTaskKeys.CANNOT_OFFER_TASK_ID] ?: 0) > 0) {
+            return true
+        }
+        return primaryTaskIds.any { taskId -> (dayTasks[taskId] ?: 0) > 0 }
     }
 
     /**

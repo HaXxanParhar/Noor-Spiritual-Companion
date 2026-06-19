@@ -26,6 +26,6 @@ interface FriendDao {
     @Query("SELECT * FROM friends WHERE sync_status = :status")
     suspend fun getBySyncStatus(status: SyncStatus): List<FriendEntity>
 
-    @Query("SELECT COUNT(*) FROM friends WHERE user_uid = :userUid AND friend_uid = :friendUid")
-    suspend fun exists(userUid: String, friendUid: String): Int
+    @Query("DELETE FROM friends WHERE user_uid = :userUid AND friend_uid = :friendUid")
+    suspend fun delete(userUid: String, friendUid: String)
 }

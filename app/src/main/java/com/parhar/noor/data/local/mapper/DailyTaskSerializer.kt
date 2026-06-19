@@ -25,12 +25,36 @@ object DailyTaskSerializer {
     }
 
     fun serialize(entries: List<DailyTaskEntryEntity>): String {
-        return entries.joinToString(separator = ",") { "${it.taskId}=${it.points}" }
+        return serializeOrdered(entries.filter { it.points > 0 })
     }
 
     fun serializeMap(taskPoints: Map<String, Int>): String {
-        return taskPoints.entries.joinToString(separator = ",") { (taskId, points) ->
-            "$taskId=$points"
-        }
+        val active = taskPoints.filterValues { points -> points > 0 }
+        val cannotOfferPair = active[DailyTaskKeys.CANNOT_OFFER_TASK_ID]
+        val others = active
+            .filterKeys { taskId -> !DailyTaskKeys.isCannotOfferKey(taskId) }
+            .toList()
+            .sortedBy { (taskId, _) -> taskId }
+
+        return buildList {
+            if (cannotOfferPair != null) {
+                add("${DailyTaskKeys.CANNOT_OFFER_TASK_ID}=$cannotOfferPair")
+            }
+            others.forEach { (taskId, points) ->
+                add("$taskId=$points")
+            }
+        }.joinToString(separator = ",")
+    }
+
+    private fun serializeOrdered(activeEntries: List<DailyTaskEntryEntity>): String {
+        val cannotOffer = activeEntries.firstOrNull { DailyTaskKeys.isCannotOfferKey(it.taskId) }
+        val others = activeEntries
+            .filter { !DailyTaskKeys.isCannotOfferKey(it.taskId) }
+            .sortedBy { it.taskId }
+
+        return buildList {
+            cannotOffer?.let { add("${it.taskId}=${it.points}") }
+            others.forEach { add("${it.taskId}=${it.points}") }
+        }.joinToString(separator = ",")
     }
 }

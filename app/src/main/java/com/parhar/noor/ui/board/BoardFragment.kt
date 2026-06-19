@@ -1,5 +1,6 @@
 package com.parhar.noor.ui.board
 
+import android.app.Dialog
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -9,13 +10,15 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.parhar.noor.R
 import com.parhar.noor.databinding.FragmentBoardBinding
-import com.parhar.noor.databinding.ItemLeaderboardRowBinding
 import com.parhar.noor.di.appContainer
 import com.parhar.noor.domain.model.LeaderboardEntry
+import com.parhar.noor.domain.model.WeekResultSummary
+import com.parhar.noor.ui.friends.FriendsActivity
+import com.parhar.noor.ui.usertasks.UserTasksActivity
 import com.parhar.noor.utils.BaseFragment
+import com.parhar.noor.utils.NoorDialogs
 import kotlinx.coroutines.launch
 
 class BoardFragment : BaseFragment<FragmentBoardBinding>() {
@@ -23,7 +26,8 @@ class BoardFragment : BaseFragment<FragmentBoardBinding>() {
     private val viewModel: BoardViewModel by viewModels {
         requireContext().appContainer().viewModelFactory
     }
-    private lateinit var leaderboardAdapter: LeaderboardAdapter
+    private lateinit var leaderboardAdapter: LeaderboardUiRenderer.LeaderboardAdapter
+    private var weekResultDialog: Dialog? = null
 
     override fun inflateBinding(
         inflater: LayoutInflater,
@@ -31,37 +35,92 @@ class BoardFragment : BaseFragment<FragmentBoardBinding>() {
     ): FragmentBoardBinding = FragmentBoardBinding.inflate(inflater, container, false)
 
     override fun setupViews() {
-        leaderboardAdapter = LeaderboardAdapter()
+        leaderboardAdapter = LeaderboardUiRenderer.LeaderboardAdapter { entry ->
+            startActivity(UserTasksActivity.createIntent(requireContext(), entry.uid))
+        }
         binding.leaderboardListRecyclerView.apply {
             adapter = leaderboardAdapter
             layoutManager = LinearLayoutManager(requireContext())
             isNestedScrollingEnabled = false
         }
 
-        binding.addFriendTopTextView.setOnClickListener { openInviteFriends() }
+        binding.friendsTopTextView.setOnClickListener {
+            startActivity(FriendsActivity.createIntent(requireContext()))
+        }
+
         binding.addInviteFriendTextView.setOnClickListener { openInviteFriends() }
         observeViewModel()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.refreshWeekState()
+    }
+
+    override fun onDestroyView() {
+        weekResultDialog?.dismiss()
+        weekResultDialog = null
+        setBlockingLoading(false)
+        super.onDestroyView()
     }
 
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.boardState.collect { state ->
-                    binding.dateRangeTextView.text = state.dateRangeLabel
-                    if (state.hasFriends) {
-                        showFriendsBoard(state.entries)
-                    } else {
-                        showNoFriendsState()
+                launch {
+                    viewModel.isWeekPreparing.collect { preparing ->
+                        setBlockingLoading(
+                            preparing,
+                            if (preparing) viewModel.preparingWeekMessage else null,
+                        )
+                    }
+                }
+                launch {
+                    viewModel.boardState.collect { state ->
+                        binding.weekTitleTextView.text = state.weekTitle
+                        if (!state.countdownText.isNullOrBlank()) {
+                            binding.weekCountdownTextView.text = state.countdownText
+                            binding.weekCountdownTextView.visibility = View.VISIBLE
+                        } else {
+                            binding.weekCountdownTextView.visibility = View.GONE
+                        }
+                        if (state.hasFriends) {
+                            showFriendsBoard(state.entries)
+                        } else {
+                            showNoFriendsState()
+                        }
+                    }
+                }
+                launch {
+                    viewModel.weekResultEvent.collect { result ->
+                        setBlockingLoading(false)
+                        showWeekResultDialog(result)
                     }
                 }
             }
         }
     }
 
+    private fun showWeekResultDialog(result: WeekResultSummary) {
+        if (!isAdded) return
+        weekResultDialog?.dismiss()
+        weekResultDialog = NoorDialogs.showWeekResult(
+            context = requireActivity(),
+            result = result,
+            onViewLeaderboard = {
+                weekResultDialog = null
+                startActivity(LeaderBoardActivity.createIntent(requireContext(), result.weekKey))
+            },
+            onDismiss = {
+                weekResultDialog = null
+            },
+        )
+    }
+
     private fun showFriendsBoard(entries: List<LeaderboardEntry>) {
         binding.noFriendsContainer.visibility = View.GONE
         binding.friendsBoardContainer.visibility = View.VISIBLE
-        renderPodium(entries)
+        LeaderboardUiRenderer.renderPodium(binding, entries) { openInviteFriends() }
         leaderboardAdapter.submitEntries(entries)
     }
 
@@ -69,118 +128,10 @@ class BoardFragment : BaseFragment<FragmentBoardBinding>() {
         binding.friendsBoardContainer.visibility = View.GONE
         binding.noFriendsContainer.visibility = View.VISIBLE
         leaderboardAdapter.submitEntries(emptyList())
-        hidePodium()
-    }
-
-    private fun renderPodium(entries: List<LeaderboardEntry>) {
-        bindPodiumPlace(
-            container = binding.firstPlaceContainer,
-            avatarView = binding.firstAvatarTextView,
-            nameView = binding.firstNameTextView,
-            pointsView = binding.firstPointsTextView,
-            entry = entries.getOrNull(0),
-        )
-        bindPodiumPlace(
-            container = binding.secondPlaceContainer,
-            avatarView = binding.secondAvatarTextView,
-            nameView = binding.secondNameTextView,
-            pointsView = binding.secondPointsTextView,
-            entry = entries.getOrNull(1),
-        )
-        bindPodiumPlace(
-            container = binding.thirdPlaceContainer,
-            avatarView = binding.thirdAvatarTextView,
-            nameView = binding.thirdNameTextView,
-            pointsView = binding.thirdPointsTextView,
-            entry = entries.getOrNull(2),
-        )
-    }
-
-    private fun bindPodiumPlace(
-        container: View,
-        avatarView: android.widget.TextView,
-        nameView: android.widget.TextView,
-        pointsView: android.widget.TextView,
-        entry: LeaderboardEntry?,
-    ) {
-        container.visibility = View.VISIBLE
-
-        if (entry != null) {
-            avatarView.text = entry.initials
-            avatarView.setBackgroundResource(
-                when (container.id) {
-                    binding.firstPlaceContainer.id -> R.drawable.bg_leaderboard_avatar_gold
-                    binding.secondPlaceContainer.id -> R.drawable.bg_leaderboard_avatar_silver
-                    else -> R.drawable.bg_leaderboard_avatar_bronze
-                },
-            )
-            nameView.text = entry.name
-            pointsView.text = entry.points.toString()
-            pointsView.visibility = View.VISIBLE
-            container.isClickable = false
-            container.setOnClickListener(null)
-            return
-        }
-
-        avatarView.text = "+"
-        avatarView.setBackgroundResource(R.drawable.bg_leaderboard_avatar_default)
-        nameView.text = getString(R.string.leaderboard_podium_add_friend)
-        pointsView.visibility = View.GONE
-        container.isClickable = true
-        container.setOnClickListener { openInviteFriends() }
-    }
-
-    private fun hidePodium() {
-        renderPodium(emptyList())
+        LeaderboardUiRenderer.renderPodium(binding, emptyList()) { openInviteFriends() }
     }
 
     private fun openInviteFriends() {
         startActivity(Intent(requireContext(), InviteFriendsActivity::class.java))
-    }
-
-    private class LeaderboardAdapter : RecyclerView.Adapter<LeaderboardAdapter.EntryViewHolder>() {
-
-        private val entries = mutableListOf<LeaderboardEntry>()
-
-        fun submitEntries(newEntries: List<LeaderboardEntry>) {
-            entries.clear()
-            entries.addAll(newEntries)
-            notifyDataSetChanged()
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EntryViewHolder {
-            val binding = ItemLeaderboardRowBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false,
-            )
-            return EntryViewHolder(binding)
-        }
-
-        override fun onBindViewHolder(holder: EntryViewHolder, position: Int) {
-            holder.bind(entries[position])
-        }
-
-        override fun getItemCount(): Int = entries.size
-
-        private class EntryViewHolder(
-            private val binding: ItemLeaderboardRowBinding,
-        ) : RecyclerView.ViewHolder(binding.root) {
-
-            fun bind(entry: LeaderboardEntry) {
-                binding.rankTextView.text = entry.rank.toString()
-                binding.avatarTextView.text = entry.initials
-                binding.nameTextView.text = entry.name
-                binding.pointsTextView.text = entry.points.toString()
-                binding.streakTextView.text = "🔥 ${entry.streak}"
-                binding.leaderboardRow.setBackgroundResource(
-                    if (entry.isCurrentUser) {
-                        R.drawable.bg_leaderboard_you_row
-                    } else {
-                        R.drawable.bg_home_row
-                    },
-                )
-            }
-        }
     }
 }

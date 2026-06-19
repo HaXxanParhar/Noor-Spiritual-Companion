@@ -15,6 +15,7 @@ espressoCore = "3.7.0"
 appcompat = "1.7.1"
 firebaseBom = "34.14.1"
 googleServices = "4.4.4"
+crashlyticsGradle = "3.0.3"
 lifecycle = "2.10.0"
 material = "1.14.0"
 okhttp = "5.4.0"
@@ -22,6 +23,7 @@ playServicesAuth = "21.6.0"
 recyclerview = "1.4.0"
 retrofit = "3.0.0"
 viewpager2 = "1.1.0"
+shimmer = "0.5.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -35,6 +37,10 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
+firebase-functions = { group = "com.google.firebase", name = "firebase-functions" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-play-services = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version.ref = "coroutinesPlayServices" }
@@ -54,9 +60,11 @@ androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx"
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity" }
 androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragment" }
+facebook-shimmer = { group = "com.facebook.shimmer", name = "shimmer", version.ref = "shimmer" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlyticsGradle" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 

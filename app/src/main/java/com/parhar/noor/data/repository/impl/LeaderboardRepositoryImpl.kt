@@ -4,10 +4,12 @@ import com.parhar.noor.data.local.dao.DailyTaskEntryDao
 import com.parhar.noor.data.local.dao.FriendDao
 import com.parhar.noor.data.local.dao.UserDao
 import com.parhar.noor.data.local.dao.UserPreferencesDao
+import com.parhar.noor.data.local.mapper.EntityMappers.toDomain
 import com.parhar.noor.data.local.mapper.EntityMappers.toTaskHistory
 import com.parhar.noor.data.repository.LeaderboardRepository
 import com.parhar.noor.data.sync.ConnectivityMonitor
 import com.parhar.noor.domain.model.BoardState
+import com.parhar.noor.domain.model.LeaderboardEntry
 import com.parhar.noor.domain.usecase.LeaderboardUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -47,6 +49,10 @@ class LeaderboardRepositoryImpl(
                 .filter { it.uid in participantIds }
                 .associate { user -> user.uid to user.name.ifBlank { user.uid } }
 
+            val avatars = allUsers
+                .filter { it.uid in participantIds }
+                .associate { user -> user.uid to user.toDomain().avatar }
+
             val histories = allEntries
                 .filter { it.userUid in participantIds }
                 .groupBy { it.userUid }
@@ -66,6 +72,7 @@ class LeaderboardRepositoryImpl(
             val entries = leaderboardUseCase.buildEntries(
                 currentUid = currentUid,
                 participantProfiles = completeProfiles,
+                participantAvatars = completeProfiles.keys.associateWith { uid -> avatars[uid] },
                 histories = histories,
                 primaryTaskIds = primaryIds,
                 todayKey = todayKey,
@@ -77,6 +84,56 @@ class LeaderboardRepositoryImpl(
                 entries = entries,
                 hasFriends = true,
                 isOffline = !isOnline,
+            )
+        }
+    }
+
+    override fun observeLeaderboardForDateKeys(
+        currentUid: String,
+        dateKeys: List<String>,
+        todayKeyForStreak: String,
+        youLabel: String,
+    ): Flow<List<LeaderboardEntry>> {
+        return combine(
+            friendDao.observeFriendIds(currentUid),
+            dailyTaskEntryDao.observeAll(),
+            userDao.observeAll(),
+            userPreferencesDao.observe(currentUid),
+        ) { friendIds, allEntries, allUsers, preferences ->
+            val participantIds = (friendIds + currentUid).distinct()
+            val profiles = allUsers
+                .filter { it.uid in participantIds }
+                .associate { user -> user.uid to user.name.ifBlank { user.uid } }
+
+            val avatars = allUsers
+                .filter { it.uid in participantIds }
+                .associate { user -> user.uid to user.toDomain().avatar }
+
+            val histories = allEntries
+                .filter { it.userUid in participantIds }
+                .groupBy { it.userUid }
+                .mapValues { (_, entries) -> entries.toTaskHistory() }
+
+            val primaryIds = preferences
+                ?.primaryTaskIds
+                ?.split(",")
+                ?.filter { it.isNotBlank() }
+                ?.toSet()
+                .orEmpty()
+
+            val completeProfiles = participantIds.associateWith { uid ->
+                profiles[uid] ?: uid
+            }
+
+            leaderboardUseCase.buildEntriesForDateKeys(
+                currentUid = currentUid,
+                participantProfiles = completeProfiles,
+                participantAvatars = completeProfiles.keys.associateWith { uid -> avatars[uid] },
+                histories = histories,
+                primaryTaskIds = primaryIds,
+                dateKeys = dateKeys,
+                todayKeyForStreak = todayKeyForStreak,
+                youLabel = youLabel,
             )
         }
     }

@@ -16,14 +16,16 @@
     <color name="streak_surface">#2B2305</color>
     <color name="silver_medal">#B8BDC9</color>
     <color name="bronze_medal">#B87333</color>
-    <color name="podium_first">#3A2C08</color>
-    <color name="podium_second">#2A2D3A</color>
-    <color name="podium_third">#342518</color>
+    <color name="podium_first">#C8991C</color>
+    <color name="podium_second">#686D81</color>
+    <color name="podium_third">#835D3D</color>
     <color name="locked_ring">#3C425A</color>
     <color name="text_primary">#F8FAFC</color>
     <color name="text_secondary">#AAB1C8</color>
     <color name="text_muted">#727A94</color>
     <color name="overlay_soft">#66000000</color>
+    <color name="shimmer_base">#1A1E36</color>
+    <color name="shimmer_highlight">#2B304A</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>

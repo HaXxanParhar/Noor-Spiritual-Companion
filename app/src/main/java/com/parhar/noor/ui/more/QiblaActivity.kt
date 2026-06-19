@@ -4,6 +4,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import com.parhar.noor.R
 import com.parhar.noor.databinding.ActivityQiblaBinding
 import com.parhar.noor.utils.BaseActivity
 import kotlin.math.roundToInt
@@ -22,7 +23,8 @@ class QiblaActivity : BaseActivity<ActivityQiblaBinding>(), SensorEventListener 
         ActivityQiblaBinding.inflate(layoutInflater)
 
     override fun setupViews() {
-        binding.backTextView.setOnClickListener { finish() }
+        binding.toolbar.backImageView.setOnClickListener { finish() }
+        binding.toolbar.toolbarTitleTextView.setText(R.string.qibla_title)
     }
 
     override fun onResume() {

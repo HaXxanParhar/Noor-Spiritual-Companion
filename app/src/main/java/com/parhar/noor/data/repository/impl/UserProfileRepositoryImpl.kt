@@ -5,11 +5,13 @@ import com.parhar.noor.data.local.SyncStatus
 import com.parhar.noor.data.local.dao.UserDao
 import com.parhar.noor.data.local.mapper.EntityMappers.toDomain
 import com.parhar.noor.data.local.mapper.EntityMappers.toEntity
+import com.parhar.noor.data.local.mapper.EntityMappers.toRemote
 import com.parhar.noor.data.remote.UserRemoteDataSource
-import com.parhar.noor.data.remote.dto.RemoteUserProfile
 import com.parhar.noor.data.repository.UserProfileRepository
 import com.parhar.noor.data.sync.ConnectivityMonitor
 import com.parhar.noor.data.sync.SyncCoordinator
+import com.parhar.noor.domain.model.UserAvatar
+import com.parhar.noor.domain.model.UserPrivacy
 import com.parhar.noor.domain.model.UserProfile
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -30,18 +32,24 @@ class UserProfileRepositoryImpl(
     }
 
     override suspend fun saveProfile(profile: UserProfile) {
-        val now = System.currentTimeMillis()
-        userDao.upsert(profile.toEntity(now, SyncStatus.PENDING_PUSH))
-        syncCoordinator.enqueueOutbox(
-            opType = SyncOpType.SAVE_PROFILE,
-            entityId = profile.uid,
-            payload = RemoteUserProfile(
-                uid = profile.uid,
-                email = profile.email,
-                name = profile.name,
-                gender = profile.gender,
-            ),
-        )
+        persistProfile(profile)
+    }
+
+    override suspend fun saveAvatar(uid: String, avatar: UserAvatar) {
+        val existing = getUser(uid) ?: return
+        persistProfile(existing.copy(avatar = avatar))
+    }
+
+    override suspend fun savePrivacy(uid: String, privacy: UserPrivacy) {
+        val existing = getUser(uid) ?: return
+        persistProfile(existing.copy(privacy = privacy))
+    }
+
+    override suspend fun saveFcmToken(uid: String, token: String) {
+        if (uid.isBlank() || token.isBlank()) return
+        if (connectivityMonitor.checkOnline()) {
+            runCatching { userRemote.saveFcmToken(uid, token) }
+        }
     }
 
     override suspend fun userExists(uid: String): Boolean {
@@ -49,5 +57,15 @@ class UserProfileRepositoryImpl(
         if (local != null) return true
         if (!connectivityMonitor.checkOnline()) return false
         return userRemote.userExists(uid)
+    }
+
+    private suspend fun persistProfile(profile: UserProfile) {
+        val now = System.currentTimeMillis()
+        userDao.upsert(profile.toEntity(now, SyncStatus.PENDING_PUSH))
+        syncCoordinator.enqueueOutbox(
+            opType = SyncOpType.SAVE_PROFILE,
+            entityId = profile.uid,
+            payload = profile.toRemote(),
+        )
     }
 }

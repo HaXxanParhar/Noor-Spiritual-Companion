@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_home_row"
+    android:gravity="center_vertical"
+    android:minHeight="52dp"
+    android:orientation="horizontal"
+    android:paddingHorizontal="@dimen/spacing_md"
+    android:paddingVertical="@dimen/spacing_sm">
+
+    <TextView
+        android:id="@+id/previousDateTextView"
+        style="@style/TextAppearance.App.Button"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:background="@drawable/bg_secondary_action"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="‹"
+        android:textColor="@color/gold_primary"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/selectedDateTextView"
+        style="@style/TextAppearance.App.Caption"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/spacing_sm"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textColor="@color/text_primary"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/nextDateTextView"
+        style="@style/TextAppearance.App.Button"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:background="@drawable/bg_secondary_action"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="›"
+        android:textColor="@color/gold_primary"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+</LinearLayout>

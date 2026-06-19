@@ -2,6 +2,7 @@ package com.parhar.noor.ui.more
 
 import android.content.Context
 import android.content.Intent
+import com.parhar.noor.R
 import com.parhar.noor.databinding.ActivityComingSoonBinding
 import com.parhar.noor.utils.BaseActivity
 
@@ -11,7 +12,8 @@ class ComingSoonActivity : BaseActivity<ActivityComingSoonBinding>() {
         ActivityComingSoonBinding.inflate(layoutInflater)
 
     override fun setupViews() {
-        binding.backTextView.setOnClickListener { finish() }
+        binding.toolbar.backImageView.setOnClickListener { finish() }
+        binding.toolbar.toolbarTitleTextView.setText(R.string.coming_soon_back)
         intent.getStringExtra(EXTRA_TITLE)?.takeIf { it.isNotBlank() }?.let { title ->
             binding.titleTextView.text = title
         }

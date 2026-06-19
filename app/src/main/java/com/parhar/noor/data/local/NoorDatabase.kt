@@ -34,7 +34,7 @@ import com.parhar.noor.data.local.entity.UserPreferencesEntity
         SyncOutboxEntity::class,
         SyncMetadataEntity::class,
     ],
-    version = 1,
+    version = 8,
     exportSchema = false,
 )
 @TypeConverters(NoorTypeConverters::class)

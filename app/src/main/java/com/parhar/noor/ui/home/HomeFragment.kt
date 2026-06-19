@@ -21,8 +21,12 @@ import com.parhar.noor.databinding.ItemHomeTaskSectionBinding
 import com.parhar.noor.di.appContainer
 import com.parhar.noor.domain.model.HomeTaskSection
 import com.parhar.noor.domain.model.TaskItem
+import com.parhar.noor.ui.profile.ProfileActivity
+import com.parhar.noor.utils.AvatarRenderer
 import com.parhar.noor.utils.BaseFragment
+import com.parhar.noor.utils.DateKeyUtils
 import com.parhar.noor.utils.TaskStatsCalculator
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -46,6 +50,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun setupViews() {
         sectionAdapter = TaskSectionAdapter(
             onTaskClicked = ::onTaskClicked,
+            onCannotOfferClicked = ::onCannotOfferClicked,
         )
         binding.tasksContainer.apply {
             adapter = sectionAdapter
@@ -54,6 +59,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             itemAnimator = null
         }
 
+        binding.avatar.setOnClickListener {
+            startActivity(ProfileActivity.createIntent(requireContext()))
+        }
+        binding.dateNavigator.previousDateTextView.setOnClickListener { viewModel.goToPreviousDate() }
+        binding.dateNavigator.nextDateTextView.setOnClickListener { viewModel.goToNextDate() }
         renderDate()
         observeViewModel()
         currentUserId()?.let(viewModel::setUserId)
@@ -91,6 +101,41 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     }
                 }
                 launch {
+                    combine(
+                        viewModel.showCannotOfferOption,
+                        viewModel.cannotOffer,
+                        viewModel.isPrimaryPrayerLocked,
+                        viewModel.canCheckSelectedDate,
+                    ) { showOption, cannotOffer, isLocked, canCheck ->
+                        CannotOfferUiState(
+                            showOption = showOption && canCheck,
+                            cannotOffer = cannotOffer,
+                            isPrimaryLocked = isLocked,
+                        )
+                    }.collect { uiState ->
+                        sectionAdapter.updateCannotOfferUiState(uiState)
+                    }
+                }
+                launch {
+                    viewModel.canCheckSelectedDate.collect { canCheck ->
+                        sectionAdapter.updateCanCheckTasks(canCheck)
+                    }
+                }
+                launch {
+                    viewModel.isTasksLoading.collect { isLoading ->
+                        binding.tasksShimmerContainer.visibility =
+                            if (isLoading) View.VISIBLE else View.GONE
+                        binding.tasksContainer.visibility =
+                            if (isLoading) View.GONE else View.VISIBLE
+                        if (isLoading) {
+                            binding.tasksStatusTextView.visibility = View.GONE
+                            binding.tasksShimmerContainer.startShimmer()
+                        } else {
+                            binding.tasksShimmerContainer.stopShimmer()
+                        }
+                    }
+                }
+                launch {
                     viewModel.taskStats.collect { stats ->
                         binding.todayPointsTextView.text = getString(
                             R.string.home_today_points_format,
@@ -108,12 +153,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     }
                 }
                 launch {
-                    viewModel.userName.collect { name ->
+                    combine(
+                        viewModel.userName,
+                        viewModel.userProfile,
+                    ) { name, profile ->
+                        name to profile
+                    }.collect { (name, profile) ->
                         val displayName = name
                             ?: auth.currentUser?.displayName?.takeIf { it.isNotBlank() }
                             ?: "Abdullah"
                         binding.userNameTextView.text = "$displayName!"
-                        binding.avatar.text = TaskStatsCalculator.toInitials(displayName)
+                        AvatarRenderer.apply(
+                            binding.avatar,
+                            displayName,
+                            profile?.avatar,
+                            sizeDp = 48,
+                        )
                     }
                 }
                 launch {
@@ -124,6 +179,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 launch {
                     viewModel.errorMessage.collect { message ->
                         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+                launch {
+                    viewModel.selectedDateKey.collect { dateKey ->
+                        binding.dateNavigator.selectedDateTextView.text =
+                            DateKeyUtils.formatDisplayDate(dateKey)
                     }
                 }
             }
@@ -137,6 +198,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             points = taskItem.task.points,
             isCurrentlyChecked = isChecked,
         )
+    }
+
+    private fun onCannotOfferClicked() {
+        viewModel.toggleCannotOffer(!viewModel.cannotOffer.value)
     }
 
     private fun renderTaskSections(sections: List<HomeTaskSection>) {
@@ -233,11 +298,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         return "$day $month $year AH"
     }
 
+    private data class CannotOfferUiState(
+        val showOption: Boolean = false,
+        val cannotOffer: Boolean = false,
+        val isPrimaryLocked: Boolean = false,
+    )
+
     private class TaskSectionAdapter(
         private val onTaskClicked: (TaskItem) -> Unit,
+        private val onCannotOfferClicked: () -> Unit,
     ) : ListAdapter<HomeTaskSection, TaskSectionAdapter.SectionViewHolder>(SectionDiffCallback()) {
 
         private var checkedTaskIds: Set<String> = emptySet()
+        private var cannotOfferUiState = CannotOfferUiState()
+        private var canCheckTasks: Boolean = true
         private var parentRecyclerView: RecyclerView? = null
 
         override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -258,11 +332,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             refreshVisibleTaskRows()
         }
 
+        fun updateCannotOfferUiState(uiState: CannotOfferUiState) {
+            if (cannotOfferUiState == uiState) return
+            cannotOfferUiState = uiState
+            refreshVisibleTaskRows()
+        }
+
+        fun updateCanCheckTasks(canCheck: Boolean) {
+            if (canCheckTasks == canCheck) return
+            canCheckTasks = canCheck
+            refreshVisibleTaskRows()
+        }
+
         private fun refreshVisibleTaskRows() {
             val recyclerView = parentRecyclerView ?: return
             for (index in 0 until itemCount) {
                 (recyclerView.findViewHolderForAdapterPosition(index) as? SectionViewHolder)
-                    ?.refreshCheckedStates(checkedTaskIds)
+                    ?.refresh(checkedTaskIds, cannotOfferUiState, canCheckTasks)
             }
         }
 
@@ -272,19 +358,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 parent,
                 false,
             )
-            return SectionViewHolder(binding, onTaskClicked)
+            return SectionViewHolder(binding, onTaskClicked, onCannotOfferClicked)
         }
 
         override fun onBindViewHolder(holder: SectionViewHolder, position: Int) {
-            holder.bind(getItem(position), checkedTaskIds)
+            holder.bind(getItem(position), checkedTaskIds, cannotOfferUiState, canCheckTasks)
         }
 
         private class SectionViewHolder(
             private val binding: ItemHomeTaskSectionBinding,
             private val onTaskClicked: (TaskItem) -> Unit,
+            private val onCannotOfferClicked: () -> Unit,
         ) : RecyclerView.ViewHolder(binding.root) {
 
             private val taskAdapter = TaskAdapter(onTaskClicked)
+            private var boundSection: HomeTaskSection? = null
 
             init {
                 binding.tasksRecyclerView.apply {
@@ -295,20 +383,50 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 }
             }
 
-            fun bind(section: HomeTaskSection, checkedTaskIds: Set<String>) {
+            fun bind(
+                section: HomeTaskSection,
+                checkedTaskIds: Set<String>,
+                cannotOfferUiState: CannotOfferUiState,
+                canCheckTasks: Boolean,
+            ) {
+                boundSection = section
+                val isPrimarySection = section.category.equals(PRIMARY_SECTION_NAME, ignoreCase = true)
+                val showCannotOffer = isPrimarySection && cannotOfferUiState.showOption
+
+                binding.cannotOfferRow.root.visibility = if (showCannotOffer) View.VISIBLE else View.GONE
+                if (showCannotOffer) {
+                    binding.cannotOfferRow.cannotOfferStatusTextView.renderStatus(cannotOfferUiState.cannotOffer)
+                    binding.cannotOfferRow.root.setOnClickListener { onCannotOfferClicked() }
+                } else {
+                    binding.cannotOfferRow.root.setOnClickListener(null)
+                }
+
                 val isSectionChecked = section.tasks.isNotEmpty() &&
                     section.tasks.all { taskItem -> checkedTaskIds.contains(taskItem.id) }
                 binding.sectionStatusTextView.renderStatus(isSectionChecked)
                 binding.sectionTitleTextView.text = section.title.uppercase()
-                taskAdapter.bindSection(section.category, section.tasks, checkedTaskIds)
+                if (section.description.isBlank()) {
+                    binding.sectionDescriptionTextView.visibility = View.GONE
+                } else {
+                    binding.sectionDescriptionTextView.visibility = View.VISIBLE
+                    binding.sectionDescriptionTextView.text = section.description
+                }
+                taskAdapter.bindSection(
+                    category = section.category,
+                    tasks = section.tasks,
+                    checkedTaskIds = checkedTaskIds,
+                    isPrimaryLocked = isPrimarySection && cannotOfferUiState.isPrimaryLocked,
+                    isReadOnly = !canCheckTasks,
+                )
             }
 
-            fun refreshCheckedStates(checkedTaskIds: Set<String>) {
-                val section = taskAdapter.currentSection ?: return
-                val isSectionChecked = section.tasks.isNotEmpty() &&
-                    section.tasks.all { taskItem -> checkedTaskIds.contains(taskItem.id) }
-                binding.sectionStatusTextView.renderStatus(isSectionChecked)
-                taskAdapter.updateCheckedTaskIds(checkedTaskIds)
+            fun refresh(
+                checkedTaskIds: Set<String>,
+                cannotOfferUiState: CannotOfferUiState,
+                canCheckTasks: Boolean,
+            ) {
+                val section = boundSection ?: return
+                bind(section, checkedTaskIds, cannotOfferUiState, canCheckTasks)
             }
 
             private fun TextView.renderStatus(isChecked: Boolean) {
@@ -317,6 +435,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 )
                 text = if (isChecked) context.getString(R.string.status_done) else ""
                 setTextColor(context.getColor(R.color.navy_base))
+            }
+
+            private companion object {
+                private const val PRIMARY_SECTION_NAME = "Primary"
             }
         }
     }
@@ -341,21 +463,29 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         private var category: String = ""
         private var tasks: List<TaskItem> = emptyList()
         private var checkedTaskIds: Set<String> = emptySet()
+        private var isPrimaryLocked: Boolean = false
+        private var isReadOnly: Boolean = false
 
         fun bindSection(
             category: String,
             tasks: List<TaskItem>,
             checkedTaskIds: Set<String>,
+            isPrimaryLocked: Boolean,
+            isReadOnly: Boolean,
         ) {
             val categoryChanged = this.category != category
             val tasksChanged = this.tasks != tasks
+            val lockChanged = this.isPrimaryLocked != isPrimaryLocked
+            val readOnlyChanged = this.isReadOnly != isReadOnly
             this.category = category
             this.tasks = tasks
             this.checkedTaskIds = checkedTaskIds
+            this.isPrimaryLocked = isPrimaryLocked
+            this.isReadOnly = isReadOnly
             currentSection = TaskSectionSnapshot(category, tasks)
 
             when {
-                categoryChanged || tasksChanged -> notifyDataSetChanged()
+                categoryChanged || tasksChanged || lockChanged || readOnlyChanged -> notifyDataSetChanged()
                 else -> notifyItemRangeChanged(0, itemCount, PAYLOAD_CHECKED)
             }
         }
@@ -376,12 +506,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
 
         override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-            holder.bindFull(tasks[position], category, checkedTaskIds)
+            holder.bindFull(tasks[position], category, checkedTaskIds, isPrimaryLocked, isReadOnly)
         }
 
         override fun onBindViewHolder(holder: TaskViewHolder, position: Int, payloads: MutableList<Any>) {
             if (payloads.contains(PAYLOAD_CHECKED)) {
-                holder.bindCheckedState(tasks[position], checkedTaskIds)
+                holder.bindCheckedState(tasks[position], checkedTaskIds, isPrimaryLocked, isReadOnly)
             } else {
                 super.onBindViewHolder(holder, position, payloads)
             }
@@ -396,12 +526,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
             private var boundTaskId: String? = null
 
-            fun bindFull(taskItem: TaskItem, category: String, checkedTaskIds: Set<String>) {
+            fun bindFull(
+                taskItem: TaskItem,
+                category: String,
+                checkedTaskIds: Set<String>,
+                isPrimaryLocked: Boolean,
+                isReadOnly: Boolean,
+            ) {
                 val task = taskItem.task
                 val context = binding.root.context
                 boundTaskId = taskItem.id
 
-                binding.iconTextView.text = resolveCategoryIcon(category)
+                binding.iconTextView.text = task.emoji.takeIf { it.isNotBlank() } ?: DEFAULT_TASK_ICON
                 binding.iconTextView.setBackgroundResource(resolveIconBackground(category))
                 binding.taskNameTextView.text = task.name
                 binding.pointsTextView.visibility = if (task.points > 0) View.VISIBLE else View.GONE
@@ -410,16 +546,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     task.points,
                     task.points,
                 )
-                bindCheckedState(taskItem, checkedTaskIds)
+                bindCheckedState(taskItem, checkedTaskIds, isPrimaryLocked, isReadOnly)
             }
 
-            fun bindCheckedState(taskItem: TaskItem, checkedTaskIds: Set<String>) {
+            fun bindCheckedState(
+                taskItem: TaskItem,
+                checkedTaskIds: Set<String>,
+                isPrimaryLocked: Boolean,
+                isReadOnly: Boolean,
+            ) {
                 boundTaskId = taskItem.id
                 val isChecked = checkedTaskIds.contains(taskItem.id)
                 binding.statusTextView.renderStatus(isChecked)
-                binding.taskRow.setOnClickListener {
-                    onTaskClicked(taskItem)
-                }
+                val isInteractive = !isPrimaryLocked && !isReadOnly
+                binding.taskRow.alpha = if (isInteractive) 1f else 0.65f
+                binding.taskRow.isClickable = isInteractive
+                binding.taskRow.setOnClickListener(
+                    if (isInteractive) {
+                        { onTaskClicked(taskItem) }
+                    } else {
+                        null
+                    },
+                )
             }
 
             private fun TextView.renderStatus(isChecked: Boolean) {
@@ -430,24 +578,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 setTextColor(context.getColor(R.color.navy_base))
             }
 
-            private fun resolveCategoryIcon(category: String): String {
-                return when {
-                    category.contains("salah", ignoreCase = true) ||
-                        category.contains("primary", ignoreCase = true) -> "🕌"
-                    category.contains("bonus", ignoreCase = true) ||
-                        category.contains("good", ignoreCase = true) -> "💚"
-                    category.contains("dua", ignoreCase = true) -> "🤲"
-                    category.contains("quran", ignoreCase = true) -> "📖"
-                    category.contains("darood", ignoreCase = true) -> "💜"
-                    category.contains("event", ignoreCase = true) -> "✨"
-                    else -> "✦"
-                }
-            }
-
             private fun resolveIconBackground(category: String): Int {
                 return when {
-                    category.contains("bonus", ignoreCase = true) ||
-                        category.contains("good", ignoreCase = true) -> R.drawable.bg_icon_box_good
                     category.contains("quran", ignoreCase = true) -> R.drawable.bg_icon_box_teal
                     category.contains("dua", ignoreCase = true) -> R.drawable.bg_icon_box_warm
                     else -> R.drawable.bg_icon_box
@@ -457,6 +589,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
         private companion object {
             private const val PAYLOAD_CHECKED = "checked"
+            private const val DEFAULT_TASK_ICON = "✦"
         }
     }
 

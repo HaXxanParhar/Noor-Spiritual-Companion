@@ -59,6 +59,18 @@ class SessionManager(context: Context) {
             .remove(KEY_EMAIL)
             .remove(KEY_NAME)
             .remove(KEY_GENDER)
+            .remove(KEY_FRIEND_COUNT)
+            .putBoolean(KEY_ADMIN_AUTHENTICATED, false)
+            .apply()
+    }
+
+    fun isAdminAuthenticated(): Boolean {
+        return preferences.getBoolean(KEY_ADMIN_AUTHENTICATED, false)
+    }
+
+    fun setAdminAuthenticated(authenticated: Boolean) {
+        preferences.edit()
+            .putBoolean(KEY_ADMIN_AUTHENTICATED, authenticated)
             .apply()
     }
 
@@ -70,6 +82,25 @@ class SessionManager(context: Context) {
 
     fun getPrimaryTaskIds(): Set<String> {
         return preferences.getStringSet(KEY_PRIMARY_TASK_IDS, emptySet()).orEmpty()
+    }
+
+    fun saveFriendCount(count: Int) {
+        preferences.edit()
+            .putInt(KEY_FRIEND_COUNT, count.coerceAtLeast(0))
+            .apply()
+    }
+
+    fun getFriendCount(): Int {
+        return preferences.getInt(KEY_FRIEND_COUNT, 0).coerceAtLeast(0)
+    }
+
+    fun consumeNextSplashMotivationQuoteIndex(quoteCount: Int): Int {
+        if (quoteCount <= 0) return 0
+        val index = preferences.getInt(KEY_SPLASH_QUOTE_INDEX, 0) % quoteCount
+        preferences.edit()
+            .putInt(KEY_SPLASH_QUOTE_INDEX, (index + 1) % quoteCount)
+            .apply()
+        return index
     }
 
     fun getLastFavPopupMessage(email: String): String? {
@@ -96,5 +127,8 @@ class SessionManager(context: Context) {
         private const val KEY_GENDER = "gender"
         private const val KEY_PRIMARY_TASK_IDS = "primary_task_ids"
         private const val KEY_LAST_FAV_POPUP_MESSAGE = "last_fav_popup_message"
+        private const val KEY_ADMIN_AUTHENTICATED = "admin_authenticated"
+        private const val KEY_FRIEND_COUNT = "friend_count"
+        private const val KEY_SPLASH_QUOTE_INDEX = "splash_quote_index"
     }
 }

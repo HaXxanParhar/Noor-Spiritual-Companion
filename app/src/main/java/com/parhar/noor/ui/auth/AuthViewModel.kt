@@ -28,11 +28,13 @@ class AuthViewModel(
         viewModelScope.launch {
             _isLoading.value = true
             runCatching {
+                val now = System.currentTimeMillis()
                 val profile = UserProfile(
                     uid = uid,
                     email = email,
                     name = name,
                     gender = gender,
+                    createdAt = now,
                 )
                 userProfileRepository.saveProfile(profile)
                 sessionManager.saveUserSession(

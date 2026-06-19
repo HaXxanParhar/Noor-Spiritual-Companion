@@ -8,6 +8,7 @@ import com.parhar.noor.data.local.dao.TaskDefinitionDao
 import com.parhar.noor.data.local.dao.UserPreferencesDao
 import com.parhar.noor.data.local.entity.DailyTaskEntryEntity
 import com.parhar.noor.data.local.entity.UserPreferencesEntity
+import com.parhar.noor.data.local.mapper.DailyTaskKeys
 import com.parhar.noor.data.local.mapper.EntityMappers.toDomain
 import com.parhar.noor.data.local.mapper.EntityMappers.toTaskHistory
 import com.parhar.noor.data.local.mapper.EntityMappers.toTaskItem
@@ -17,7 +18,9 @@ import com.parhar.noor.data.repository.UserTaskRepository
 import com.parhar.noor.data.sync.SyncCoordinator
 import com.parhar.noor.domain.model.DailyTaskState
 import com.parhar.noor.domain.model.HomeTaskSection
+import com.parhar.noor.domain.model.TaskItem
 import com.parhar.noor.domain.model.UserTaskStats
+import com.parhar.noor.domain.usecase.CatalogSectionBuilder
 import com.parhar.noor.domain.usecase.TaskStatsUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -30,6 +33,8 @@ class UserTaskRepositoryImpl(
     private val userPreferencesDao: UserPreferencesDao,
     private val syncCoordinator: SyncCoordinator,
     private val taskStatsUseCase: TaskStatsUseCase,
+    private val userRemote: com.parhar.noor.data.remote.UserRemoteDataSource,
+    private val localDataStore: com.parhar.noor.data.local.LocalDataStore,
 ) : UserTaskRepository {
 
     override fun observeHomeSections(): Flow<List<HomeTaskSection>> {
@@ -37,34 +42,11 @@ class UserTaskRepositoryImpl(
             categoryDao.observeAll(),
             taskDefinitionDao.observeAll(),
         ) { categories, tasks ->
-            val titleMap = categories.associate { it.categoryKey to it.title }
-            val grouped = tasks.groupBy { it.category }
-            val ordered = mutableListOf<HomeTaskSection>()
-            FIXED_SECTION_ORDER.forEach { sectionName ->
-                grouped.entries.firstOrNull { (category, _) ->
-                    category.equals(sectionName, ignoreCase = true)
-                }?.let { (category, sectionTasks) ->
-                    ordered.add(
-                        HomeTaskSection(
-                            category = category,
-                            title = titleMap[category.lowercase()].orEmpty().ifBlank { category },
-                            tasks = sectionTasks.map { it.toTaskItem() },
-                        ),
-                    )
-                }
-            }
-            grouped.filterKeys { category ->
-                FIXED_SECTION_ORDER.none { it.equals(category, ignoreCase = true) }
-            }.forEach { (category, sectionTasks) ->
-                ordered.add(
-                    HomeTaskSection(
-                        category = category,
-                        title = titleMap[category.lowercase()].orEmpty().ifBlank { category },
-                        tasks = sectionTasks.map { it.toTaskItem() },
-                    ),
-                )
-            }
-            ordered
+            CatalogSectionBuilder.buildSections(
+                categories = categories.map { it.toDomain() },
+                tasks = tasks.map { it.toDomain() },
+                includeEmptyCategories = false,
+            )
         }
     }
 
@@ -73,7 +55,11 @@ class UserTaskRepositoryImpl(
             val taskPoints = entries.toTaskPointsMap()
             DailyTaskState(
                 taskPoints = taskPoints,
-                checkedTaskIds = taskPoints.filterValues { it > 0 }.keys,
+                checkedTaskIds = taskPoints
+                    .filter { (taskId, points) ->
+                        points > 0 && !DailyTaskKeys.isCannotOfferKey(taskId)
+                    }
+                    .keys,
             )
         }
     }
@@ -87,7 +73,9 @@ class UserTaskRepositoryImpl(
         ) { historyEntries, todayEntries, taskDefinitions, preferences ->
             val history = historyEntries.toTaskHistory()
             val todayPoints = todayEntries.toTaskPointsMap()
-            val checkedIds = todayPoints.filterValues { it > 0 }.keys
+            val checkedIds = todayPoints
+                .filter { (taskId, points) -> points > 0 && !DailyTaskKeys.isCannotOfferKey(taskId) }
+                .keys
             val primaryIds = preferences?.primaryTaskIds
                 ?.split(",")
                 ?.filter { it.isNotBlank() }
@@ -103,6 +91,100 @@ class UserTaskRepositoryImpl(
                 taskPointLookup = pointLookup,
             )
         }
+    }
+
+    override suspend fun toggleCannotOfferForDate(
+        userUid: String,
+        dateKey: String,
+        checked: Boolean,
+        primaryTasks: List<TaskItem>,
+    ) {
+        val now = System.currentTimeMillis()
+        var changed = false
+
+        if (checked) {
+            val existingCannotOffer = dailyTaskEntryDao.getForDate(userUid, dateKey)
+                .firstOrNull { DailyTaskKeys.isCannotOfferKey(it.taskId) }
+            if (existingCannotOffer?.points != 1) {
+                dailyTaskEntryDao.upsert(
+                    DailyTaskEntryEntity(
+                        userUid = userUid,
+                        dateKey = dateKey,
+                        taskId = DailyTaskKeys.CANNOT_OFFER_TASK_ID,
+                        points = 1,
+                        updatedAt = now,
+                        syncStatus = SyncStatus.PENDING_PUSH,
+                    ),
+                )
+                changed = true
+            }
+            changed = bulkSetPrimaryPrayersChecked(
+                userUid = userUid,
+                dateKey = dateKey,
+                tasks = primaryTasks,
+                checked = true,
+                enqueueSync = false,
+            ) || changed
+        } else {
+            val hadCannotOffer = dailyTaskEntryDao.getForDate(userUid, dateKey)
+                .any { DailyTaskKeys.isCannotOfferKey(it.taskId) }
+            if (hadCannotOffer) {
+                dailyTaskEntryDao.deleteEntry(
+                    userUid = userUid,
+                    dateKey = dateKey,
+                    taskId = DailyTaskKeys.CANNOT_OFFER_TASK_ID,
+                )
+                changed = true
+            }
+            changed = bulkSetPrimaryPrayersChecked(
+                userUid = userUid,
+                dateKey = dateKey,
+                tasks = primaryTasks,
+                checked = false,
+                enqueueSync = false,
+            ) || changed
+        }
+
+        if (changed) {
+            enqueueDailyTasksSync(userUid, dateKey)
+        }
+    }
+
+    override suspend fun bulkSetPrimaryPrayersChecked(
+        userUid: String,
+        dateKey: String,
+        tasks: List<TaskItem>,
+        checked: Boolean,
+        enqueueSync: Boolean,
+    ): Boolean {
+        if (tasks.isEmpty()) return false
+
+        val now = System.currentTimeMillis()
+        val existingEntries = dailyTaskEntryDao.getForDate(userUid, dateKey).associateBy { it.taskId }
+        var changed = false
+
+        tasks.forEach { taskItem ->
+            val targetPoints = if (checked) taskItem.task.points.coerceAtLeast(0) else 0
+            val currentPoints = existingEntries[taskItem.id]?.points ?: 0
+            if (currentPoints == targetPoints) return@forEach
+
+            changed = true
+            dailyTaskEntryDao.upsert(
+                DailyTaskEntryEntity(
+                    userUid = userUid,
+                    dateKey = dateKey,
+                    taskId = taskItem.id,
+                    points = targetPoints,
+                    updatedAt = now,
+                    syncStatus = SyncStatus.PENDING_PUSH,
+                ),
+            )
+        }
+
+        if (changed && enqueueSync) {
+            enqueueDailyTasksSync(userUid, dateKey)
+        }
+        return changed
     }
 
     override suspend fun toggleTask(
@@ -123,11 +205,7 @@ class UserTaskRepositoryImpl(
                 syncStatus = SyncStatus.PENDING_PUSH,
             ),
         )
-        syncCoordinator.enqueueOutbox(
-            opType = SyncOpType.SAVE_DAILY_TASKS,
-            entityId = "$userUid|$dateKey",
-            payload = DailyTasksPayload(userUid = userUid, dateKey = dateKey),
-        )
+        enqueueDailyTasksSync(userUid, dateKey)
     }
 
     override suspend fun savePrimaryTaskIds(userUid: String, taskIds: Set<String>) {
@@ -149,7 +227,21 @@ class UserTaskRepositoryImpl(
             .orEmpty()
     }
 
-    private companion object {
-        private val FIXED_SECTION_ORDER = listOf("Primary", "Secondary", "Bonus", "Event")
+    override suspend fun refreshDailyTasksFromRemote(userUid: String, dateKey: String) {
+        val raw = userRemote.fetchDailyTaskString(userUid, dateKey)
+        localDataStore.forceUpsertRemoteDailyTasks(
+            userUid = userUid,
+            dateKey = dateKey,
+            rawValue = raw,
+            remoteUpdatedAt = System.currentTimeMillis(),
+        )
+    }
+
+    private suspend fun enqueueDailyTasksSync(userUid: String, dateKey: String) {
+        syncCoordinator.enqueueOutbox(
+            opType = SyncOpType.SAVE_DAILY_TASKS,
+            entityId = "$userUid|$dateKey",
+            payload = DailyTasksPayload(userUid = userUid, dateKey = dateKey),
+        )
     }
 }

@@ -9,16 +9,44 @@ import com.parhar.noor.domain.model.Category
 import com.parhar.noor.domain.model.FavoriteBanner
 import com.parhar.noor.domain.model.TaskDefinition
 import com.parhar.noor.domain.model.TaskItem
+import com.parhar.noor.domain.model.UserAvatar
+import com.parhar.noor.domain.model.UserPrivacy
 import com.parhar.noor.domain.model.UserProfile
+import com.parhar.noor.data.remote.dto.RemoteUserAvatar
+import com.parhar.noor.data.remote.dto.RemoteUserPrivacy
+import com.parhar.noor.data.remote.dto.RemoteUserProfile
 
 object EntityMappers {
 
-    fun UserEntity.toDomain(): UserProfile = UserProfile(
-        uid = uid,
-        email = email,
-        name = name,
-        gender = gender,
-    )
+    fun UserEntity.toDomain(): UserProfile {
+        val avatar = if (
+            avatarText.isNotBlank() ||
+            avatarBg.isNotBlank() ||
+            avatarBorder.isNotBlank() ||
+            avatarStyle.isNotBlank()
+        ) {
+            UserAvatar(
+                text = avatarText,
+                bg = avatarBg,
+                border = avatarBorder,
+                style = avatarStyle,
+            )
+        } else {
+            null
+        }
+        return UserProfile(
+            uid = uid,
+            email = email,
+            name = name,
+            gender = gender,
+            avatar = avatar,
+            createdAt = createdAt,
+            privacy = UserPrivacy(
+                tasksToday = privacyTasksToday,
+                tasksHistory = privacyTasksHistory,
+            ),
+        )
+    }
 
     fun UserProfile.toEntity(
         updatedAt: Long,
@@ -28,8 +56,59 @@ object EntityMappers {
         email = email,
         name = name,
         gender = gender,
+        avatarText = avatar?.text.orEmpty(),
+        avatarBg = avatar?.bg.orEmpty(),
+        avatarBorder = avatar?.border.orEmpty(),
+        avatarStyle = avatar?.style.orEmpty(),
+        createdAt = createdAt,
+        privacyTasksToday = privacy.tasksToday,
+        privacyTasksHistory = privacy.tasksHistory,
         updatedAt = updatedAt,
         syncStatus = syncStatus,
+    )
+
+    fun UserAvatar.toRemote(): RemoteUserAvatar = RemoteUserAvatar(
+        text = text,
+        bg = bg,
+        border = border,
+        style = style,
+    )
+
+    fun RemoteUserAvatar.toDomain(): UserAvatar = UserAvatar(
+        text = text,
+        bg = bg,
+        border = border,
+        style = style,
+    )
+
+    fun RemoteUserPrivacy.toDomain(): UserPrivacy = UserPrivacy(
+        tasksToday = tasksToday,
+        tasksHistory = tasksHistory,
+    )
+
+    fun UserPrivacy.toRemote(): RemoteUserPrivacy = RemoteUserPrivacy(
+        tasksToday = tasksToday,
+        tasksHistory = tasksHistory,
+    )
+
+    fun RemoteUserProfile.toDomain(): UserProfile = UserProfile(
+        uid = uid,
+        email = email,
+        name = name,
+        gender = gender,
+        avatar = avatar?.toDomain(),
+        createdAt = createdAt,
+        privacy = privacy?.toDomain() ?: UserPrivacy(),
+    )
+
+    fun UserProfile.toRemote(): RemoteUserProfile = RemoteUserProfile(
+        uid = uid,
+        email = email,
+        name = name,
+        gender = gender,
+        avatar = avatar?.toRemote(),
+        createdAt = createdAt,
+        privacy = privacy.toRemote(),
     )
 
     fun CategoryEntity.toDomain(): Category = Category(
@@ -37,6 +116,8 @@ object EntityMappers {
         categoryKey = categoryKey,
         category = categoryName,
         title = title,
+        description = description,
+        position = position,
     )
 
     fun TaskDefinitionEntity.toDomain(): TaskDefinition = TaskDefinition(
@@ -44,7 +125,8 @@ object EntityMappers {
         category = category,
         name = name,
         points = points,
-        sortOrder = sortOrder,
+        position = position,
+        emoji = emoji,
     )
 
     fun TaskDefinitionEntity.toTaskItem(): TaskItem = TaskItem(

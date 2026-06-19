@@ -15,6 +15,8 @@ data class CategoryEntity(
     @ColumnInfo(name = "category_key")     val categoryKey: String,
     @ColumnInfo(name = "category_name") val categoryName: String,
     val title: String = "",
+    val description: String = "",
+    val position: Int = 0,
     @ColumnInfo(name = "updated_at") val updatedAt: Long,
     @ColumnInfo(name = "sync_status") val syncStatus: SyncStatus = SyncStatus.SYNCED,
 )

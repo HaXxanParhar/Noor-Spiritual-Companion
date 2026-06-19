@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_app"
@@ -21,12 +22,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    style="@style/TextAppearance.App.Heading1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/leaderboard_title" />
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -36,38 +44,47 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/dateRangeTextView"
+                            android:id="@+id/weekTitleTextView"
+                            style="@style/TextAppearance.App.Heading2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/leaderboard_title" />
+
+                        <TextView
+                            android:id="@+id/weekCountdownTextView"
                             style="@style/TextAppearance.App.Caption"
-                            android:layout_width="wrap_content"
-                            android:layout_height="34dp"
-                            android:background="@drawable/bg_points_chip"
-                            android:gravity="center"
-                            android:paddingHorizontal="@dimen/spacing_md"
-                            android:text="@string/leaderboard_date_range"
-                            android:textColor="@color/text_primary"
-                            android:textStyle="bold" />
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="-4dp"
+                            android:text=""
+                            android:textColor="@color/text_muted"
+                            android:visibility="invisible" />
 
                         <TextView
                             android:id="@+id/boardTitleTextView"
-                            style="@style/TextAppearance.App.Heading1"
+                            style="@style/TextAppearance.App.CaptionSmall"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_lg"
-                            android:text="@string/leaderboard_title" />
+                            android:text="@string/leaderboard_title"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
                     </LinearLayout>
 
                     <TextView
-                        android:id="@+id/addFriendTopTextView"
+                        android:id="@+id/friendsTopTextView"
                         style="@style/TextAppearance.App.Heading1"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
+                        android:layout_marginEnd="@dimen/spacing_sm"
                         android:background="@drawable/bg_home_row"
                         android:clickable="true"
                         android:focusable="true"
                         android:gravity="center"
-                        android:text="+"
+                        android:text="@string/friends_top_button"
                         android:textColor="@color/gold_primary"
                         android:textStyle="bold" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -87,28 +104,29 @@
                         android:orientation="vertical"
                         android:visibility="visible">
 
-                        <FrameLayout
+                        <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                android:id="@+id/secondAvatarTextView"
-                                style="@style/TextAppearance.App.Caption"
-                                android:layout_width="44dp"
-                                android:layout_height="44dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@drawable/bg_leaderboard_avatar_silver"
-                                android:gravity="center"
-                                android:textColor="@color/text_primary"
-                                android:textStyle="bold" />
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="top|center_horizontal"
                                 android:text="🥈"
-                                android:textSize="14sp" />
-                        </FrameLayout>
+                                android:textSize="30sp" />
+
+                            <TextView
+                                android:id="@+id/secondAvatarTextView"
+                                style="@style/TextAppearance.App.Caption"
+                                android:layout_width="44dp"
+                                android:layout_height="44dp"
+                                android:background="@drawable/bg_leaderboard_avatar_silver"
+                                android:gravity="center"
+                                android:textColor="@color/text_primary"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
 
                         <TextView
                             android:id="@+id/secondNameTextView"
@@ -116,6 +134,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_sm"
+                            android:gravity="center"
                             android:textColor="@color/text_primary"
                             android:textStyle="bold" />
 
@@ -139,33 +158,35 @@
                         android:id="@+id/firstPlaceContainer"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/spacing_sm"
                         android:layout_weight="1"
                         android:gravity="center_horizontal"
                         android:orientation="vertical"
                         android:visibility="visible">
 
-                        <FrameLayout
+                        <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                android:id="@+id/firstAvatarTextView"
-                                style="@style/TextAppearance.App.BodyPrimary"
-                                android:layout_width="52dp"
-                                android:layout_height="52dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@drawable/bg_leaderboard_avatar_gold"
-                                android:gravity="center"
-                                android:textColor="@color/text_primary"
-                                android:textStyle="bold" />
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="top|center_horizontal"
                                 android:text="🥇"
-                                android:textSize="14sp" />
-                        </FrameLayout>
+                                android:textSize="30sp" />
+
+                            <TextView
+                                android:id="@+id/firstAvatarTextView"
+                                style="@style/TextAppearance.App.BodyPrimary"
+                                android:layout_width="52dp"
+                                android:layout_height="52dp"
+                                android:background="@drawable/bg_leaderboard_avatar_gold"
+                                android:gravity="center"
+                                android:textColor="@color/text_primary"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
 
                         <TextView
                             android:id="@+id/firstNameTextView"
@@ -173,6 +194,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_sm"
+                            android:gravity="center"
                             android:textColor="@color/text_primary"
                             android:textStyle="bold" />
 
@@ -201,28 +223,30 @@
                         android:orientation="vertical"
                         android:visibility="visible">
 
-                        <FrameLayout
+                        <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                android:id="@+id/thirdAvatarTextView"
-                                style="@style/TextAppearance.App.Caption"
-                                android:layout_width="44dp"
-                                android:layout_height="44dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@drawable/bg_leaderboard_avatar_bronze"
-                                android:gravity="center"
-                                android:textColor="@color/text_primary"
-                                android:textStyle="bold" />
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="top|center_horizontal"
                                 android:text="🥉"
-                                android:textSize="14sp" />
-                        </FrameLayout>
+                                android:textSize="30sp" />
+
+                            <TextView
+                                android:id="@+id/thirdAvatarTextView"
+                                style="@style/TextAppearance.App.Caption"
+                                android:layout_width="44dp"
+                                android:layout_height="44dp"
+                                android:background="@drawable/bg_leaderboard_avatar_silver"
+                                android:gravity="center"
+                                android:textColor="@color/text_primary"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
 
                         <TextView
                             android:id="@+id/thirdNameTextView"
@@ -230,6 +254,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_sm"
+                            android:gravity="center"
                             android:textColor="@color/text_primary"
                             android:textStyle="bold" />
 
@@ -273,7 +298,8 @@
         android:gravity="center"
         android:orientation="vertical"
         android:padding="@dimen/spacing_xl"
-        android:visibility="visible">
+        android:visibility="visible"
+        tools:visibility="gone">
 
         <ImageView
             android:layout_width="@dimen/logo_size"

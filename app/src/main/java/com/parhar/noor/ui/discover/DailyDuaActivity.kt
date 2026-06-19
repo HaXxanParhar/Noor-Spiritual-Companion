@@ -1,5 +1,6 @@
 package com.parhar.noor.ui.discover
 
+import com.parhar.noor.R
 import com.parhar.noor.databinding.ActivityDailyDuaBinding
 import com.parhar.noor.utils.BaseActivity
 
@@ -9,6 +10,7 @@ class DailyDuaActivity : BaseActivity<ActivityDailyDuaBinding>() {
         ActivityDailyDuaBinding.inflate(layoutInflater)
 
     override fun setupViews() {
-        binding.backTextView.setOnClickListener { finish() }
+        binding.toolbar.backImageView.setOnClickListener { finish() }
+        binding.toolbar.toolbarTitleTextView.setText(R.string.daily_dua_title)
     }
 }

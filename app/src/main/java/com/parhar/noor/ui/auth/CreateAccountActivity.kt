@@ -105,11 +105,10 @@ class CreateAccountActivity : BaseActivity<ActivityCreateAccountBinding>() {
     }
 
     private fun setLoading(isLoading: Boolean) {
-        binding.createAccountTextView.isEnabled = !isLoading
-        binding.createAccountTextView.alpha = if (isLoading) 0.5f else 1f
-        if (isLoading) {
-            binding.statusTextView.text = "Creating account..."
-        }
+        setBlockingLoading(
+            isLoading,
+            getString(R.string.creating_account),
+        )
     }
 
     private companion object {

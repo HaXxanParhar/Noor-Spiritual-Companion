@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_app"
+    android:fillViewport="true"
+    android:paddingTop="40dp"
+    android:paddingBottom="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_lg">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_activity_toolbar" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/profileAvatarTextView"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:gravity="center"
+                android:textColor="@color/gold_primary"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/profileNameTextView"
+                style="@style/TextAppearance.App.Display"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_md"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/memberSinceTextView"
+                style="@style/TextAppearance.App.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:gravity="center"
+                android:textColor="@color/text_muted" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_quote_card"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_md">
+
+                <TextView
+                    android:id="@+id/streakValueTextView"
+                    style="@style/TextAppearance.App.Heading1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gold_primary" />
+
+                <TextView
+                    style="@style/TextAppearance.App.CaptionSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profile_stat_streak" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_sm"
+                android:layout_weight="1"
+                android:background="@drawable/bg_quote_card"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_md">
+
+                <TextView
+                    android:id="@+id/allTimeValueTextView"
+                    style="@style/TextAppearance.App.Heading1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gold_primary" />
+
+                <TextView
+                    style="@style/TextAppearance.App.CaptionSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profile_stat_all_time" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_quote_card"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_md">
+
+                <TextView
+                    android:id="@+id/friendsValueTextView"
+                    style="@style/TextAppearance.App.Heading1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gold_primary" />
+
+                <TextView
+                    style="@style/TextAppearance.App.CaptionSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profile_stat_friends" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:text="@string/profile_trophies_title"
+            android:textColor="@color/text_muted"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/goldTrophyTextView"
+                style="@style/TextAppearance.App.BodyPrimary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_sm"
+                android:layout_weight="1"
+                android:textColor="@color/gold_primary"
+                android:background="@drawable/bg_quote_card"
+                android:gravity="center"
+                android:padding="@dimen/spacing_md"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/silverTrophyTextView"
+                style="@style/TextAppearance.App.BodyPrimary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/silver_medal"
+                android:layout_marginEnd="@dimen/spacing_sm"
+                android:layout_weight="1"
+                android:background="@drawable/bg_quote_card"
+                android:gravity="center"
+                android:padding="@dimen/spacing_md"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/bronzeTrophyTextView"
+                style="@style/TextAppearance.App.BodyPrimary"
+                android:layout_width="0dp"
+                android:textColor="@color/bronze_medal"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_quote_card"
+                android:gravity="center"
+                android:padding="@dimen/spacing_md"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:text="@string/profile_medals_title"
+            android:textColor="@color/text_muted"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/firstPlaceMedalTextView"
+                style="@style/TextAppearance.App.Caption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_sm"
+                android:layout_weight="1"
+                android:background="@drawable/bg_home_row"
+                android:gravity="center"
+                android:padding="@dimen/spacing_md" />
+
+            <TextView
+                android:id="@+id/secondPlaceMedalTextView"
+                style="@style/TextAppearance.App.Caption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_sm"
+                android:layout_weight="1"
+                android:background="@drawable/bg_home_row"
+                android:gravity="center"
+                android:padding="@dimen/spacing_md" />
+
+            <TextView
+                android:id="@+id/thirdPlaceMedalTextView"
+                style="@style/TextAppearance.App.Caption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_home_row"
+                android:gravity="center"
+                android:padding="@dimen/spacing_md" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/top5MedalTextView"
+                style="@style/TextAppearance.App.Caption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_sm"
+                android:layout_weight="1"
+                android:background="@drawable/bg_home_row"
+                android:gravity="center"
+                android:padding="@dimen/spacing_md" />
+
+            <TextView
+                android:id="@+id/top10MedalTextView"
+                style="@style/TextAppearance.App.Caption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_home_row"
+                android:gravity="center"
+                android:padding="@dimen/spacing_md" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:text="@string/profile_tier_title"
+            android:textColor="@color/text_muted"
+            android:textStyle="bold" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:background="@drawable/bg_tier_progress_track">
+
+            <View
+                android:id="@+id/tierProgressFillView"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_primary_action" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tierBronzeLabelTextView"
+                style="@style/TextAppearance.App.CaptionSmall"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tierPointsTextView"
+                style="@style/TextAppearance.App.CaptionSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/gold_primary"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tierMaxTextView"
+                style="@style/TextAppearance.App.CaptionSmall"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tierBronzeRowTextView"
+            style="@style/TextAppearance.App.BodyPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_md"
+            android:background="@drawable/bg_home_row"
+            android:padding="@dimen/spacing_md" />
+
+        <TextView
+            android:id="@+id/tierSilverRowTextView"
+            style="@style/TextAppearance.App.BodyPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:background="@drawable/bg_home_row"
+            android:padding="@dimen/spacing_md" />
+
+        <TextView
+            android:id="@+id/tierGoldRowTextView"
+            style="@style/TextAppearance.App.BodyPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:background="@drawable/bg_home_row"
+            android:padding="@dimen/spacing_md" />
+
+        <TextView
+            android:id="@+id/removeFriendTextView"
+            style="@style/TextAppearance.App.Button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:background="@drawable/bg_logout_action"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/profile_remove_friend"
+            android:textColor="@color/rose_dua"
+            android:visibility="gone" />
+    </LinearLayout>
+</ScrollView>

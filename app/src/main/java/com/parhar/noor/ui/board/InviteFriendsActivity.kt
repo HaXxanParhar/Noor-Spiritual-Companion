@@ -26,7 +26,8 @@ class InviteFriendsActivity : BaseActivity<ActivityInviteFriendsBinding>() {
     override fun setupViews() {
         binding.userIdTextView.text = viewModel.userId.orEmpty()
 
-        binding.backTextView.setOnClickListener { finish() }
+        binding.toolbar.backImageView.setOnClickListener { finish() }
+        binding.toolbar.toolbarTitleTextView.setText(R.string.invite_friends_title)
         binding.copyUserIdTextView.setOnClickListener {
             copyUserId(viewModel.userId)
         }
@@ -48,8 +49,10 @@ class InviteFriendsActivity : BaseActivity<ActivityInviteFriendsBinding>() {
                 }
                 launch {
                     viewModel.isLoading.collect { isLoading ->
-                        binding.addFriendTextView.isEnabled = !isLoading
-                        binding.addFriendTextView.alpha = if (isLoading) 0.5f else 1f
+                        setBlockingLoading(
+                            isLoading,
+                            getString(R.string.loading_overlay_message),
+                        )
                     }
                 }
             }

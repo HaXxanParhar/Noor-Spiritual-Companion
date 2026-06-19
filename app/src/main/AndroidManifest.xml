@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:name=".NoorApplication"
@@ -16,10 +17,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Noor">
         <activity
+            android:name=".ui.admin.AddCategoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.admin.TrophiesListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.admin.AddTrophyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.admin.CategoriesListActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.admin.AddTaskActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.admin.TasksListActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.admin.AdminPanelActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.board.LeaderBoardActivity"
             android:exported="false" />
         <activity
             android:name=".ui.more.AboutActivity"
@@ -70,8 +89,34 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.friends.FriendsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.profile.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.profile.EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.profile.CreateAvatarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.privacy.PrivacyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.usertasks.UserTasksActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.onboarding.OnboardingActivity"
             android:exported="false" />
+
+        <service
+            android:name=".data.notifications.NoorFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

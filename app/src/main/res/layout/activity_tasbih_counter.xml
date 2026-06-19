@@ -8,7 +8,9 @@
     android:paddingTop="40dp"
     android:paddingBottom="10dp">
 
-    <TextView android:id="@+id/backTextView" style="@style/TextAppearance.App.Heading1" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="←  Tasbih Counter" />
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/layout_activity_toolbar" />
 
     <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_marginTop="@dimen/spacing_lg" android:layout_weight="1" android:background="@drawable/bg_donation_selected" android:gravity="center" android:orientation="vertical" android:padding="@dimen/spacing_xl">
         <TextView style="@style/TextAppearance.App.BodyPrimary" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:text="Count your dhikr" android:textColor="@color/green_bonus" android:textStyle="bold" />

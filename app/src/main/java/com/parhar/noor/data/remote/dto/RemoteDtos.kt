@@ -1,16 +1,33 @@
 package com.parhar.noor.data.remote.dto
 
+data class RemoteUserAvatar(
+    val text: String = "",
+    val bg: String = "",
+    val border: String = "",
+    val style: String = "",
+)
+
+data class RemoteUserPrivacy(
+    val tasksToday: String = com.parhar.noor.domain.model.PrivacyVisibility.PRIVATE,
+    val tasksHistory: String = com.parhar.noor.domain.model.PrivacyVisibility.PRIVATE,
+)
+
 data class RemoteUserProfile(
     val uid: String = "",
     val email: String = "",
     val name: String = "",
     val gender: String = "",
+    val avatar: RemoteUserAvatar? = null,
+    val createdAt: Long = 0L,
+    val privacy: RemoteUserPrivacy? = null,
 )
 
 data class RemoteCategory(
     val id: String,
     val category: String,
     val title: String,
+    val description: String = "",
+    val position: Int = 0,
 )
 
 data class RemoteTaskDefinition(
@@ -18,12 +35,21 @@ data class RemoteTaskDefinition(
     val category: String,
     val name: String,
     val points: Int,
+    val position: Int = 0,
+    val emoji: String = "",
 )
 
 data class RemoteFavoriteInfo(
     val email: String = "",
     val emoji: String = "",
     val top: String = "",
+)
+
+data class RemoteTrophy(
+    val id: String = "",
+    val name: String = "",
+    val icon: String = "",
+    val requirement: Int = 0,
 )
 
 data class DailyTasksPayload(
@@ -41,6 +67,8 @@ data class AddTaskDefPayload(
     val category: String,
     val name: String,
     val points: Int,
+    val position: Int = 0,
+    val emoji: String = "",
 )
 
 data class RemoteSteakPeriod(
@@ -52,4 +80,31 @@ data class RemoteSteakPeriod(
 data class RemoteSteakSnapshot(
     val current: RemoteSteakPeriod? = null,
     val highest: RemoteSteakPeriod? = null,
+)
+
+data class RemoteWeekCycle(
+    val weekKey: String = "",
+    val joinedAt: Long = 0L,
+    val title: String = "",
+    val start: String = "",
+    val end: String = "",
+    val endAt: Long = 0L,
+    val myPosition: Int = -1,
+    val points: Int = 0,
+    val done: Boolean = false,
+)
+
+data class RemoteUserMedals(
+    val total1st: Int = 0,
+    val total2nd: Int = 0,
+    val total3rd: Int = 0,
+    val totalTop5: Int = 0,
+    val totalTop10: Int = 0,
+)
+
+data class RemoteReminder(
+    val senderId: String = "",
+    val sender: String = "",
+    val message: String = "",
+    val createdAt: Long = 0L,
 )

@@ -34,6 +34,10 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
     protected open fun observeState() = Unit
 
+    protected fun setBlockingLoading(visible: Boolean, message: String? = null) {
+        (activity as? BaseActivity<*>)?.setBlockingLoading(visible, message)
+    }
+
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()

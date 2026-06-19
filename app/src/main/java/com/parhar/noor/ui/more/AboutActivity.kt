@@ -1,5 +1,6 @@
 package com.parhar.noor.ui.more
 
+import com.parhar.noor.R
 import com.parhar.noor.databinding.ActivityAboutBinding
 import com.parhar.noor.utils.BaseActivity
 
@@ -9,6 +10,7 @@ class AboutActivity : BaseActivity<ActivityAboutBinding>() {
         ActivityAboutBinding.inflate(layoutInflater)
 
     override fun setupViews() {
-        binding.backTextView.setOnClickListener { finish() }
+        binding.toolbar.backImageView.setOnClickListener { finish() }
+        binding.toolbar.toolbarTitleTextView.setText(R.string.about_back)
     }
 }

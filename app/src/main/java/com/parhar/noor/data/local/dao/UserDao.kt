@@ -32,6 +32,9 @@ interface UserDao {
     @Query("SELECT * FROM users WHERE sync_status = :status")
     suspend fun getBySyncStatus(status: SyncStatus): List<UserEntity>
 
+    @Query("SELECT * FROM users")
+    suspend fun getAll(): List<UserEntity>
+
     @Query("DELETE FROM users WHERE uid = :uid")
     suspend fun delete(uid: String)
 }

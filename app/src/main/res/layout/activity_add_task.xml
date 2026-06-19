@@ -13,13 +13,9 @@
         android:orientation="vertical"
         android:padding="@dimen/spacing_lg">
 
-        <TextView
-            android:id="@+id/backTextView"
-            style="@style/TextAppearance.App.Heading1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="←  Add Task" />
-
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_activity_toolbar" />
         <TextView
             style="@style/TextAppearance.App.CaptionSmall"
             android:layout_width="match_parent"
@@ -37,6 +33,26 @@
             android:background="@drawable/bg_input"
             android:hint="Enter task name"
             android:inputType="textCapWords"
+            android:textColorHint="@color/text_muted" />
+
+        <TextView
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_lg"
+            android:text="@string/admin_task_emoji_label"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/taskEmojiEditText"
+            style="@style/TextAppearance.App.Input"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:background="@drawable/bg_input"
+            android:hint="@string/admin_task_emoji_hint"
+            android:inputType="text"
+            android:maxLength="8"
             android:textColorHint="@color/text_muted" />
 
         <TextView
@@ -92,6 +108,20 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:text="Add Task" />
+            android:text="@string/admin_add_task_action" />
+
+        <TextView
+            android:id="@+id/deleteTaskTextView"
+            style="@style/TextAppearance.App.Button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/spacing_md"
+            android:background="@drawable/bg_logout_action"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/admin_delete_task_action"
+            android:textColor="@color/rose_dua"
+            android:visibility="gone" />
     </LinearLayout>
 </ScrollView>

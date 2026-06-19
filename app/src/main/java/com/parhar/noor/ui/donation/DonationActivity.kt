@@ -12,9 +12,8 @@ class DonationActivity : BaseActivity<ActivityDonationBinding>() {
         ActivityDonationBinding.inflate(layoutInflater)
 
     override fun setupViews() {
-        binding.backTextView.setOnClickListener {
-            finish()
-        }
+        binding.toolbar.backImageView.setOnClickListener { finish() }
+        binding.toolbar.toolbarTitleTextView.setText(R.string.donation_title)
         setupDonationRangeToggles(binding.root)
     }
 

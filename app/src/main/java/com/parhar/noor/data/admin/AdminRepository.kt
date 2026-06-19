@@ -5,10 +5,37 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.tasks.await
+import java.util.Locale
 
 class AdminRepository(
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance(),
 ) {
+
+    suspend fun fetchAdminConfig(): AdminConfig? {
+        val snapshot = database.reference.child(ADMIN_NODE).get().await()
+        if (!snapshot.exists()) return null
+
+        val emailsRaw = snapshot.child(EMAIL_FIELD).getValue(String::class.java).orEmpty()
+        val password = snapshot.child(PASSWORD_FIELD).getValue(String::class.java).orEmpty()
+        if (emailsRaw.isBlank() || password.isBlank()) return null
+
+        return AdminConfig(
+            emails = parseAdminEmails(emailsRaw),
+            password = password,
+        )
+    }
+
+    fun isAdminEmail(email: String, adminEmails: List<String>): Boolean {
+        val normalized = email.trim().lowercase(Locale.getDefault())
+        if (normalized.isBlank()) return false
+        return adminEmails.any { it.equals(normalized, ignoreCase = true) }
+    }
+
+    fun parseAdminEmails(raw: String): List<String> {
+        return raw.split(",")
+            .map { it.trim().lowercase(Locale.getDefault()) }
+            .filter { it.isNotBlank() }
+    }
 
     suspend fun getCategories(): List<CategoryItem> {
         val snapshot = database.reference.child(CATEGORIES_NODE).get().await()
@@ -91,6 +118,9 @@ class AdminRepository(
     }
 
     private companion object {
+        private const val ADMIN_NODE = "admin"
+        private const val EMAIL_FIELD = "email"
+        private const val PASSWORD_FIELD = "password"
         private const val CATEGORIES_NODE = "categories"
         private const val TASKS_NODE = "tasks"
         private const val CATEGORY_FIELD = "category"
