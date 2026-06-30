@@ -2,10 +2,12 @@ package com.parhar.noor.ui.admin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.parhar.noor.data.repository.AyatsRepository
 import com.parhar.noor.data.repository.CategoryPositionDirection
 import com.parhar.noor.data.repository.CatalogRepository
 import com.parhar.noor.data.repository.TrophiesRepository
 import com.parhar.noor.data.repository.TaskPositionDirection
+import com.parhar.noor.domain.model.Ayat
 import com.parhar.noor.domain.model.Category
 import com.parhar.noor.domain.model.HomeTaskSection
 import com.parhar.noor.domain.model.Trophy
@@ -20,6 +22,7 @@ import kotlinx.coroutines.launch
 class AdminViewModel(
     private val catalogRepository: CatalogRepository,
     private val trophiesRepository: TrophiesRepository,
+    private val ayatsRepository: AyatsRepository,
 ) : ViewModel() {
 
     val categories: StateFlow<List<Category>> = catalogRepository.observeCategories()
@@ -39,7 +42,10 @@ class AdminViewModel(
     private val _optimisticTaskSections = MutableStateFlow<List<HomeTaskSection>?>(null)
 
     val taskSections: StateFlow<List<HomeTaskSection>> = combine(
-        catalogRepository.observeTaskSections(includeEmptyCategories = true),
+        catalogRepository.observeTaskSections(
+            includeEmptyCategories = true,
+            includeHiddenTasks = true,
+        ),
         _optimisticTaskSections,
     ) { repositorySections, optimisticSections ->
         optimisticSections ?: repositorySections
@@ -72,11 +78,38 @@ class AdminViewModel(
     private val _trophyDeleted = MutableStateFlow(false)
     val trophyDeleted: StateFlow<Boolean> = _trophyDeleted.asStateFlow()
 
-    fun addTask(category: String, name: String, points: Int, emoji: String = "") {
+    val ayats: StateFlow<List<Ayat>> = ayatsRepository.observeAyats()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+
+    private val _ayatSaved = MutableStateFlow(false)
+    val ayatSaved: StateFlow<Boolean> = _ayatSaved.asStateFlow()
+
+    private val _ayatDeleted = MutableStateFlow(false)
+    val ayatDeleted: StateFlow<Boolean> = _ayatDeleted.asStateFlow()
+
+    fun addTask(
+        category: String,
+        name: String,
+        points: Int,
+        emoji: String = "",
+        shortDescription: String = "",
+        detailedDescription: String = "",
+        arabic: String = "",
+        visible: Boolean = true,
+    ) {
         runBlockingAdminAction(
             onFailure = { error -> _statusMessage.value = error.message ?: "Unable to add task." },
         ) {
-            catalogRepository.addTask(category, name, points, emoji)
+            catalogRepository.addTask(
+                category = category,
+                name = name,
+                points = points,
+                emoji = emoji,
+                shortDescription = shortDescription,
+                detailedDescription = detailedDescription,
+                arabic = arabic,
+                visible = visible,
+            )
             _statusMessage.value = "Task added."
             _taskSaved.value = true
         }
@@ -89,6 +122,10 @@ class AdminViewModel(
         name: String,
         points: Int,
         emoji: String = "",
+        shortDescription: String = "",
+        detailedDescription: String = "",
+        arabic: String = "",
+        visible: Boolean = true,
     ) {
         runBlockingAdminAction(
             onFailure = { error -> _statusMessage.value = error.message ?: "Unable to update task." },
@@ -100,9 +137,22 @@ class AdminViewModel(
                 name = name,
                 points = points,
                 emoji = emoji,
+                shortDescription = shortDescription,
+                detailedDescription = detailedDescription,
+                arabic = arabic,
+                visible = visible,
             )
             _statusMessage.value = "Task updated."
             _taskSaved.value = true
+        }
+    }
+
+    fun setTaskVisible(taskId: String, category: String, visible: Boolean) {
+        runBlockingAdminAction(
+            onFailure = { error -> _statusMessage.value = error.message ?: "Unable to update visibility." },
+        ) {
+            catalogRepository.setTaskVisible(taskId, category, visible)
+            _statusMessage.value = if (visible) "Task is now visible." else "Task is now hidden."
         }
     }
 
@@ -196,6 +246,36 @@ class AdminViewModel(
         }
     }
 
+    fun addAyat(ayat: String, english: String, urdu: String, reference: String) {
+        runBlockingAdminAction(
+            onFailure = { error -> _statusMessage.value = error.message ?: "Unable to add ayat." },
+        ) {
+            ayatsRepository.addAyat(ayat, english, urdu, reference)
+            _statusMessage.value = "Ayat added."
+            _ayatSaved.value = true
+        }
+    }
+
+    fun updateAyat(ayatId: String, ayat: String, english: String, urdu: String, reference: String) {
+        runBlockingAdminAction(
+            onFailure = { error -> _statusMessage.value = error.message ?: "Unable to update ayat." },
+        ) {
+            ayatsRepository.updateAyat(ayatId, ayat, english, urdu, reference)
+            _statusMessage.value = "Ayat updated."
+            _ayatSaved.value = true
+        }
+    }
+
+    fun deleteAyat(ayatId: String) {
+        runBlockingAdminAction(
+            onFailure = { error -> _statusMessage.value = error.message ?: "Unable to delete ayat." },
+        ) {
+            ayatsRepository.deleteAyat(ayatId)
+            _statusMessage.value = "Ayat deleted."
+            _ayatDeleted.value = true
+        }
+    }
+
     private fun moveCategory(categoryId: String, direction: CategoryPositionDirection) {
         val current = _optimisticCategories.value ?: categoryList.value
         val optimistic = CategoryOptimisticReorder.apply(current, categoryId, direction) ?: return
@@ -251,6 +331,8 @@ class AdminViewModel(
         _categoryDeleted.value = false
         _trophySaved.value = false
         _trophyDeleted.value = false
+        _ayatSaved.value = false
+        _ayatDeleted.value = false
     }
 
     private fun runBlockingAdminAction(

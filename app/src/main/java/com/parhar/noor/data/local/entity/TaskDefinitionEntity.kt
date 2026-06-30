@@ -17,6 +17,10 @@ data class TaskDefinitionEntity(
     val points: Int = 0,
     val position: Int = 0,
     val emoji: String = "",
+    @ColumnInfo(name = "short_description") val shortDescription: String = "",
+    @ColumnInfo(name = "detailed_description") val detailedDescription: String = "",
+    val arabic: String = "",
+    val visible: Boolean = true,
     @ColumnInfo(name = "updated_at") val updatedAt: Long,
     @ColumnInfo(name = "sync_status") val syncStatus: SyncStatus = SyncStatus.SYNCED,
 )

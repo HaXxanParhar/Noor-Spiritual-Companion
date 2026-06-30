@@ -26,6 +26,12 @@
             android:name=".ui.admin.AddTrophyActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.admin.AyatsListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.admin.AddAyatActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.admin.CategoriesListActivity"
             android:exported="false" />
         <activity
@@ -105,6 +111,9 @@
             android:exported="false" />
         <activity
             android:name=".ui.usertasks.UserTasksActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.tasks.TaskDetailActivity"
             android:exported="false" />
         <activity
             android:name=".ui.onboarding.OnboardingActivity"

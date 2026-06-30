@@ -23,6 +23,7 @@ import com.parhar.noor.di.appContainer
 import com.parhar.noor.domain.model.HomeTaskSection
 import com.parhar.noor.domain.model.TaskItem
 import com.parhar.noor.ui.profile.ProfileActivity
+import com.parhar.noor.ui.tasks.TaskDetailActivity
 import com.parhar.noor.utils.AvatarRenderer
 import com.parhar.noor.utils.BaseActivity
 import com.parhar.noor.utils.DateKeyUtils
@@ -56,7 +57,9 @@ class UserTasksActivity : BaseActivity<ActivityUserTasksBinding>() {
         binding.toolbar.toolbarTitleTextView.setText(R.string.user_tasks_title)
         binding.toolbar.toolbarActionTextView.visibility = View.GONE
 
-        sectionAdapter = ReadOnlyTaskSectionAdapter()
+        sectionAdapter = ReadOnlyTaskSectionAdapter { taskItem ->
+            startActivity(TaskDetailActivity.createIntent(this, taskItem))
+        }
         binding.tasksContainer.apply {
             adapter = sectionAdapter
             layoutManager = LinearLayoutManager(this@UserTasksActivity)
@@ -150,7 +153,9 @@ class UserTasksActivity : BaseActivity<ActivityUserTasksBinding>() {
         }
     }
 
-    private class ReadOnlyTaskSectionAdapter :
+    private class ReadOnlyTaskSectionAdapter(
+        private val onTaskDetailClicked: (TaskItem) -> Unit,
+    ) :
         ListAdapter<HomeTaskSection, ReadOnlyTaskSectionAdapter.SectionViewHolder>(SectionDiffCallback()) {
 
         private var checkedTaskIds: Set<String> = emptySet()
@@ -167,7 +172,7 @@ class UserTasksActivity : BaseActivity<ActivityUserTasksBinding>() {
                 parent,
                 false,
             )
-            return SectionViewHolder(binding)
+            return SectionViewHolder(binding, onTaskDetailClicked)
         }
 
         override fun onBindViewHolder(holder: SectionViewHolder, position: Int) {
@@ -176,9 +181,10 @@ class UserTasksActivity : BaseActivity<ActivityUserTasksBinding>() {
 
         private class SectionViewHolder(
             private val binding: ItemHomeTaskSectionBinding,
+            private val onTaskDetailClicked: (TaskItem) -> Unit,
         ) : RecyclerView.ViewHolder(binding.root) {
 
-            private val taskAdapter = ReadOnlyTaskAdapter()
+            private val taskAdapter = ReadOnlyTaskAdapter(onTaskDetailClicked)
 
             init {
                 binding.cannotOfferRow.root.visibility = View.GONE
@@ -224,7 +230,9 @@ class UserTasksActivity : BaseActivity<ActivityUserTasksBinding>() {
         }
     }
 
-    private class ReadOnlyTaskAdapter : RecyclerView.Adapter<ReadOnlyTaskAdapter.TaskViewHolder>() {
+    private class ReadOnlyTaskAdapter(
+        private val onTaskDetailClicked: (TaskItem) -> Unit,
+    ) : RecyclerView.Adapter<ReadOnlyTaskAdapter.TaskViewHolder>() {
 
         private var category: String = ""
         private var tasks: List<TaskItem> = emptyList()
@@ -243,7 +251,7 @@ class UserTasksActivity : BaseActivity<ActivityUserTasksBinding>() {
                 parent,
                 false,
             )
-            return TaskViewHolder(binding)
+            return TaskViewHolder(binding, onTaskDetailClicked)
         }
 
         override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
@@ -254,6 +262,7 @@ class UserTasksActivity : BaseActivity<ActivityUserTasksBinding>() {
 
         private class TaskViewHolder(
             private val binding: ItemHomeTaskBinding,
+            private val onTaskDetailClicked: (TaskItem) -> Unit,
         ) : RecyclerView.ViewHolder(binding.root) {
 
             fun bind(taskItem: TaskItem, category: String, checkedTaskIds: Set<String>) {
@@ -262,6 +271,12 @@ class UserTasksActivity : BaseActivity<ActivityUserTasksBinding>() {
                 binding.iconTextView.text = task.emoji.takeIf { it.isNotBlank() } ?: "✦"
                 binding.iconTextView.setBackgroundResource(resolveIconBackground(category))
                 binding.taskNameTextView.text = task.name
+                if (task.shortDescription.isBlank()) {
+                    binding.shortDescriptionTextView.visibility = View.GONE
+                } else {
+                    binding.shortDescriptionTextView.visibility = View.VISIBLE
+                    binding.shortDescriptionTextView.text = task.shortDescription
+                }
                 binding.pointsTextView.visibility = if (task.points > 0) View.VISIBLE else View.GONE
                 binding.pointsTextView.text = context.resources.getQuantityString(
                     R.plurals.home_task_points,
@@ -270,8 +285,10 @@ class UserTasksActivity : BaseActivity<ActivityUserTasksBinding>() {
                 )
                 val isChecked = checkedTaskIds.contains(taskItem.id)
                 binding.statusTextView.renderStatus(isChecked)
-                binding.taskRow.isClickable = false
+                binding.statusTapArea.isClickable = false
+                binding.taskRow.isClickable = true
                 binding.taskRow.alpha = 1f
+                binding.taskRow.setOnClickListener { onTaskDetailClicked(taskItem) }
             }
 
             private fun TextView.renderStatus(isChecked: Boolean) {

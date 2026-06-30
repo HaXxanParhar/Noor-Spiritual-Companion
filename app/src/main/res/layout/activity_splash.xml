@@ -6,9 +6,9 @@
     android:background="@drawable/bg_app"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="@dimen/screen_padding"
+    android:paddingHorizontal="@dimen/spacing_lg"
     android:paddingTop="40dp"
-    android:paddingBottom="24dp">
+    android:paddingBottom="@dimen/spacing_2xl">
 
     <LinearLayout
         android:id="@+id/layoutBismillah"
@@ -80,6 +80,20 @@
             tools:text="@string/splash_bismillah_arabic" />
 
         <TextView
+            android:id="@+id/tvUrduTranslation"
+            style="@style/TextAppearance.App.BodySecondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:fontFamily="@font/noto_nastaliq_regular"
+            android:gravity="center"
+            android:paddingHorizontal="30dp"
+            android:textColor="@color/text_primary"
+            android:textDirection="rtl"
+            android:visibility="gone"
+            tools:text="بے شک مشکل کے ساتھ آسانی ہے۔" />
+
+        <TextView
             android:id="@+id/tvEnglishTranslation"
             style="@style/TextAppearance.App.Caption"
             android:layout_width="match_parent"
@@ -90,6 +104,18 @@
             android:textColor="@color/text_secondary"
             android:textStyle="italic"
             tools:text="@string/splash_bismillah_english" />
+
+        <TextView
+            android:id="@+id/tvReference"
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xs"
+            android:gravity="center"
+            android:paddingHorizontal="30dp"
+            android:textColor="@color/text_muted"
+            android:visibility="gone"
+            tools:text="Ash-Sharh 94:6" />
     </LinearLayout>
 
     <LinearLayout

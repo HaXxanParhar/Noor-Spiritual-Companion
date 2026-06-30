@@ -37,6 +37,10 @@ data class RemoteTaskDefinition(
     val points: Int,
     val position: Int = 0,
     val emoji: String = "",
+    val shortDescription: String = "",
+    val detailedDescription: String = "",
+    val arabic: String = "",
+    val visible: Boolean = true,
 )
 
 data class RemoteFavoriteInfo(
@@ -50,6 +54,14 @@ data class RemoteTrophy(
     val name: String = "",
     val icon: String = "",
     val requirement: Int = 0,
+)
+
+data class RemoteAyat(
+    val id: String = "",
+    val ayat: String = "",
+    val english: String = "",
+    val urdu: String = "",
+    val reference: String = "",
 )
 
 data class DailyTasksPayload(
@@ -69,6 +81,10 @@ data class AddTaskDefPayload(
     val points: Int,
     val position: Int = 0,
     val emoji: String = "",
+    val shortDescription: String = "",
+    val detailedDescription: String = "",
+    val arabic: String = "",
+    val visible: Boolean = true,
 )
 
 data class RemoteSteakPeriod(

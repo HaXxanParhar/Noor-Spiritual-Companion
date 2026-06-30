@@ -58,6 +58,7 @@ class ViewModelFactory(
             modelClass.isAssignableFrom(AdminViewModel::class.java) -> AdminViewModel(
                 catalogRepository = appContainer.catalogRepository,
                 trophiesRepository = appContainer.trophiesRepository,
+                ayatsRepository = appContainer.ayatsRepository,
             ) as T
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> ProfileViewModel(
                 userProfileRepository = appContainer.userProfileRepository,

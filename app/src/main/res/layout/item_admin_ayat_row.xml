@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spacing_md"
+    android:background="@drawable/bg_quote_card"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_lg">
+
+    <TextView
+        android:id="@+id/ayatArabicTextView"
+        style="@style/TextAppearance.App.ArabicMotivation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/gold_primary"
+        tools:text="@string/splash_bismillah_arabic" />
+
+    <TextView
+        android:id="@+id/ayatUrduTextView"
+        style="@style/TextAppearance.App.BodySecondary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_sm"
+        android:fontFamily="@font/noto_nastaliq_regular"
+        android:gravity="center"
+        android:paddingHorizontal="30dp"
+        android:textColor="@color/text_primary"
+        android:textDirection="rtl"
+        android:visibility="gone"
+        tools:text="بے شک مشکل کے ساتھ آسانی ہے۔" />
+
+    <TextView
+        android:id="@+id/ayatEnglishTextView"
+        style="@style/TextAppearance.App.Caption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_sm"
+        android:gravity="center"
+        android:paddingHorizontal="30dp"
+        android:textColor="@color/text_secondary"
+        android:textStyle="italic"
+        tools:text="@string/splash_bismillah_english" />
+
+    <TextView
+        android:id="@+id/ayatReferenceTextView"
+        style="@style/TextAppearance.App.CaptionSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_xs"
+        android:gravity="center"
+        android:paddingHorizontal="30dp"
+        android:textColor="@color/text_muted"
+        android:visibility="gone"
+        tools:text="Ash-Sharh 94:6" />
+</LinearLayout>

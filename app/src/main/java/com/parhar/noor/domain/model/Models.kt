@@ -47,12 +47,16 @@ data class TaskDefinition(
     val points: Int,
     val position: Int = 0,
     val emoji: String = "",
-)
+    val shortDescription: String = "",
+    val detailedDescription: String = "",
+    val arabic: String = "",
+    val visible: Boolean = true,
+) : java.io.Serializable
 
 data class TaskItem(
     val id: String,
     val task: TaskDefinition,
-)
+) : java.io.Serializable
 
 data class HomeTaskSection(
     val category: String,
@@ -154,3 +158,11 @@ data class Trophy(
     val icon: String,
     val requirement: Int,
 )
+
+data class Ayat(
+    val id: String,
+    val ayat: String,
+    val english: String,
+    val urdu: String = "",
+    val reference: String = "",
+) : java.io.Serializable

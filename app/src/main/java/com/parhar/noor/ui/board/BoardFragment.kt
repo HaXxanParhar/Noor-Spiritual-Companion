@@ -38,7 +38,7 @@ class BoardFragment : BaseFragment<FragmentBoardBinding>() {
         leaderboardAdapter = LeaderboardUiRenderer.LeaderboardAdapter { entry ->
             startActivity(UserTasksActivity.createIntent(requireContext(), entry.uid))
         }
-        binding.leaderboardListRecyclerView.apply {
+        binding.leaderboardContent.leaderboardListRecyclerView.apply {
             adapter = leaderboardAdapter
             layoutManager = LinearLayoutManager(requireContext())
             isNestedScrollingEnabled = false
@@ -120,7 +120,7 @@ class BoardFragment : BaseFragment<FragmentBoardBinding>() {
     private fun showFriendsBoard(entries: List<LeaderboardEntry>) {
         binding.noFriendsContainer.visibility = View.GONE
         binding.friendsBoardContainer.visibility = View.VISIBLE
-        LeaderboardUiRenderer.renderPodium(binding, entries) { openInviteFriends() }
+        LeaderboardUiRenderer.renderPodium(binding.leaderboardContent, entries) { openInviteFriends() }
         leaderboardAdapter.submitEntries(entries)
     }
 
@@ -128,7 +128,7 @@ class BoardFragment : BaseFragment<FragmentBoardBinding>() {
         binding.friendsBoardContainer.visibility = View.GONE
         binding.noFriendsContainer.visibility = View.VISIBLE
         leaderboardAdapter.submitEntries(emptyList())
-        LeaderboardUiRenderer.renderPodium(binding, emptyList()) { openInviteFriends() }
+        LeaderboardUiRenderer.renderPodium(binding.leaderboardContent, emptyList()) { openInviteFriends() }
     }
 
     private fun openInviteFriends() {

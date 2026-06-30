@@ -32,11 +32,22 @@
         android:paddingHorizontal="@dimen/spacing_sm"
         android:textStyle="bold" />
 
+    <ImageButton
+        android:id="@+id/visibilityToggleImageButton"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="@dimen/spacing_sm"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/admin_task_show"
+        android:padding="@dimen/spacing_xs"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_visibility" />
+
     <TextView
         style="@style/TextAppearance.App.Caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_sm"
+        android:layout_marginStart="@dimen/spacing_xs"
         android:text="›"
         android:textColor="@color/text_muted" />
 </LinearLayout>

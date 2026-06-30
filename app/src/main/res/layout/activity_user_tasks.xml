@@ -3,21 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_app">
+    android:background="@drawable/bg_app"
+    android:paddingHorizontal="@dimen/spacing_lg"
+    android:paddingTop="40dp"
+    android:paddingBottom="@dimen/spacing_2xl">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:overScrollMode="never"
-        android:paddingTop="40dp"
-        android:paddingBottom="24dp">
+        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="@dimen/spacing_lg">
+            android:orientation="vertical">
 
             <include
                 android:id="@+id/toolbar"

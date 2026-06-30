@@ -73,6 +73,10 @@ class LocalDataStore(
                     points = task.points,
                     position = task.position,
                     emoji = task.emoji,
+                    shortDescription = task.shortDescription,
+                    detailedDescription = task.detailedDescription,
+                    arabic = task.arabic,
+                    visible = task.visible,
                     updatedAt = remoteUpdatedAt,
                     syncStatus = SyncStatus.SYNCED,
                 )

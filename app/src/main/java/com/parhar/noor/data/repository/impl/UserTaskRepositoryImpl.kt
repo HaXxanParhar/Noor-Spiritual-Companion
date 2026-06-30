@@ -46,6 +46,7 @@ class UserTaskRepositoryImpl(
                 categories = categories.map { it.toDomain() },
                 tasks = tasks.map { it.toDomain() },
                 includeEmptyCategories = false,
+                includeHiddenTasks = false,
             )
         }
     }

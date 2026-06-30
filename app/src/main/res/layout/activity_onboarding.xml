@@ -4,9 +4,9 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_app"
     android:orientation="vertical"
-    android:padding="@dimen/screen_padding"
+    android:paddingHorizontal="@dimen/spacing_lg"
     android:paddingTop="40dp"
-    android:paddingBottom="10dp">
+    android:paddingBottom="@dimen/spacing_2xl">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/onboardingViewPager"

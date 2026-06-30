@@ -13,9 +13,13 @@ import com.parhar.noor.data.local.NoorDatabaseMigrations.MIGRATION_4_5
 import com.parhar.noor.data.local.NoorDatabaseMigrations.MIGRATION_5_6
 import com.parhar.noor.data.local.NoorDatabaseMigrations.MIGRATION_6_7
 import com.parhar.noor.data.local.NoorDatabaseMigrations.MIGRATION_7_8
+import com.parhar.noor.data.local.NoorDatabaseMigrations.MIGRATION_8_9
+import com.parhar.noor.data.local.NoorDatabaseMigrations.MIGRATION_9_10
+import com.parhar.noor.data.remote.firebase.FirebaseAyatsRemoteDataSource
 import com.parhar.noor.data.remote.firebase.FirebaseCatalogRemoteDataSource
 import com.parhar.noor.data.remote.firebase.FirebaseTrophiesRemoteDataSource
 import com.parhar.noor.data.remote.firebase.FirebaseUserRemoteDataSource
+import com.parhar.noor.data.repository.AyatsRepository
 import com.parhar.noor.data.repository.CatalogRepository
 import com.parhar.noor.data.repository.FavoriteRepository
 import com.parhar.noor.data.repository.RemindersRepository
@@ -25,6 +29,7 @@ import com.parhar.noor.data.repository.TrophiesRepository
 import com.parhar.noor.data.repository.UserProfileRepository
 import com.parhar.noor.data.repository.UserTaskRepository
 import com.parhar.noor.data.repository.WeekRepository
+import com.parhar.noor.data.repository.impl.AyatsRepositoryImpl
 import com.parhar.noor.data.repository.impl.CatalogRepositoryImpl
 import com.parhar.noor.data.repository.impl.FavoriteRepositoryImpl
 import com.parhar.noor.data.repository.impl.RemindersRepositoryImpl
@@ -55,7 +60,7 @@ class AppContainer(private val application: Application) {
         appContext,
         NoorDatabase::class.java,
         "noor.db",
-    ).addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8).build()
+    ).addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8, MIGRATION_8_9, MIGRATION_9_10).build()
 
     val databaseAccessor: NoorDatabase
         get() = database
@@ -64,6 +69,7 @@ class AppContainer(private val application: Application) {
 
     private val catalogRemote = FirebaseCatalogRemoteDataSource()
     private val trophiesRemote = FirebaseTrophiesRemoteDataSource()
+    private val ayatsRemote = FirebaseAyatsRemoteDataSource()
     private val userRemote = FirebaseUserRemoteDataSource()
 
     private val localDataStore = LocalDataStore(
@@ -109,6 +115,11 @@ class AppContainer(private val application: Application) {
 
     val trophiesRepository: TrophiesRepository = TrophiesRepositoryImpl(
         trophiesRemote = trophiesRemote,
+    )
+
+    val ayatsRepository: AyatsRepository = AyatsRepositoryImpl(
+        ayatsRemote = ayatsRemote,
+        ayatDao = database.ayatDao(),
     )
 
     val weekRepository: WeekRepository = WeekRepositoryImpl(

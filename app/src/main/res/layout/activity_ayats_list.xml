@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_app"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/spacing_lg"
+    android:paddingTop="40dp"
+    android:paddingBottom="@dimen/spacing_2xl">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/layout_activity_toolbar" />
+
+    <TextView
+        android:id="@+id/addAyatTextView"
+        style="@style/TextAppearance.App.Button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginTop="@dimen/spacing_lg"
+        android:background="@drawable/bg_primary_action"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="@string/admin_add_ayat_action" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ayatsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/spacing_md"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/spacing_lg" />
+
+    <TextView
+        android:id="@+id/emptyTextView"
+        style="@style/TextAppearance.App.Caption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/admin_ayats_empty"
+        android:visibility="gone" />
+</LinearLayout>

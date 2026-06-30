@@ -354,6 +354,10 @@ class SyncCoordinator(
             points = payload.points,
             position = payload.position,
             emoji = payload.emoji,
+            shortDescription = payload.shortDescription,
+            detailedDescription = payload.detailedDescription,
+            arabic = payload.arabic,
+            visible = payload.visible,
         )
         catalogRemote.pushTaskDefinition(remote)
         taskDefinitionDao.upsert(
@@ -364,6 +368,10 @@ class SyncCoordinator(
                 points = payload.points,
                 position = payload.position,
                 emoji = payload.emoji,
+                shortDescription = payload.shortDescription,
+                detailedDescription = payload.detailedDescription,
+                arabic = payload.arabic,
+                visible = payload.visible,
                 updatedAt = System.currentTimeMillis(),
                 syncStatus = SyncStatus.SYNCED,
             ),

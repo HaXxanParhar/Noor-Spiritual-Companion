@@ -41,6 +41,10 @@ class FirebaseCatalogRemoteDataSource(
                     POINTS_FIELD to task.points,
                     POSITION_FIELD to task.position,
                     EMOJI_FIELD to task.emoji,
+                    SHORT_DESCRIPTION_FIELD to task.shortDescription,
+                    DETAILED_DESCRIPTION_FIELD to task.detailedDescription,
+                    ARABIC_FIELD to task.arabic,
+                    VISIBLE_FIELD to task.visible,
                 ),
             )
             .await()
@@ -154,6 +158,10 @@ class FirebaseCatalogRemoteDataSource(
             points = child(POINTS_FIELD).getValue(Int::class.java) ?: 0,
             position = child(POSITION_FIELD).getValue(Int::class.java) ?: 0,
             emoji = child(EMOJI_FIELD).getValue(String::class.java).orEmpty(),
+            shortDescription = child(SHORT_DESCRIPTION_FIELD).getValue(String::class.java).orEmpty(),
+            detailedDescription = child(DETAILED_DESCRIPTION_FIELD).getValue(String::class.java).orEmpty(),
+            arabic = child(ARABIC_FIELD).getValue(String::class.java).orEmpty(),
+            visible = child(VISIBLE_FIELD).getValue(Boolean::class.java) ?: true,
         )
     }
 
@@ -169,6 +177,10 @@ class FirebaseCatalogRemoteDataSource(
         private const val POINTS_FIELD = "points"
         private const val POSITION_FIELD = "position"
         private const val EMOJI_FIELD = "emoji"
+        private const val SHORT_DESCRIPTION_FIELD = "shortDescription"
+        private const val DETAILED_DESCRIPTION_FIELD = "detailedDescription"
+        private const val ARABIC_FIELD = "arabic"
+        private const val VISIBLE_FIELD = "visible"
         private const val TITLE_FIELD = "title"
         private const val DESCRIPTION_FIELD = "description"
     }

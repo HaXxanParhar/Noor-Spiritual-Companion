@@ -58,12 +58,16 @@ class LeaderBoardActivity : BaseActivity<ActivityLeaderboardBinding>() {
                     LeaderboardUiRenderer.renderPodium(
                         contentBinding = binding.leaderboardContent,
                         entries = entries,
-                        onInviteFriends = {},
+                        onInviteFriends = { openInviteFriends() },
                     )
                     leaderboardAdapter.submitEntries(entries)
                 }
             }
         }
+    }
+
+    private fun openInviteFriends() {
+        startActivity(Intent(this, InviteFriendsActivity::class.java))
     }
 
     companion object {

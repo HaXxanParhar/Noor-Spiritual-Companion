@@ -5,8 +5,9 @@
     android:background="@drawable/bg_app"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="@dimen/spacing_lg"
-    android:paddingTop="40dp">
+    android:paddingHorizontal="@dimen/spacing_lg"
+    android:paddingTop="40dp"
+    android:paddingBottom="@dimen/spacing_2xl">
 
     <include
         android:id="@+id/toolbar"

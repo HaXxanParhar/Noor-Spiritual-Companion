@@ -127,6 +127,10 @@ object EntityMappers {
         points = points,
         position = position,
         emoji = emoji,
+        shortDescription = shortDescription,
+        detailedDescription = detailedDescription,
+        arabic = arabic,
+        visible = visible,
     )
 
     fun TaskDefinitionEntity.toTaskItem(): TaskItem = TaskItem(

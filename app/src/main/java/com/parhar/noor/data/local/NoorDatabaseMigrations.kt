@@ -102,4 +102,37 @@ object NoorDatabaseMigrations {
             )
         }
     }
+
+    val MIGRATION_8_9 = object : Migration(8, 9) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            db.execSQL(
+                "ALTER TABLE task_definitions ADD COLUMN short_description TEXT NOT NULL DEFAULT ''",
+            )
+            db.execSQL(
+                "ALTER TABLE task_definitions ADD COLUMN detailed_description TEXT NOT NULL DEFAULT ''",
+            )
+            db.execSQL(
+                "ALTER TABLE task_definitions ADD COLUMN arabic TEXT NOT NULL DEFAULT ''",
+            )
+            db.execSQL(
+                "ALTER TABLE task_definitions ADD COLUMN visible INTEGER NOT NULL DEFAULT 1",
+            )
+        }
+    }
+
+    val MIGRATION_9_10 = object : Migration(9, 10) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            db.execSQL(
+                """
+                CREATE TABLE IF NOT EXISTS cached_ayats (
+                    id TEXT NOT NULL PRIMARY KEY,
+                    ayat TEXT NOT NULL,
+                    english TEXT NOT NULL,
+                    urdu TEXT NOT NULL,
+                    reference TEXT NOT NULL
+                )
+                """.trimIndent(),
+            )
+        }
+    }
 }

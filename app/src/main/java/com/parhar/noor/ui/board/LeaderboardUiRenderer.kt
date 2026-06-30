@@ -4,47 +4,12 @@ import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.parhar.noor.R
-import com.parhar.noor.databinding.FragmentBoardBinding
 import com.parhar.noor.databinding.LayoutLeaderboardContentBinding
 import com.parhar.noor.databinding.ItemLeaderboardRowBinding
 import com.parhar.noor.domain.model.LeaderboardEntry
 import com.parhar.noor.utils.AvatarRenderer
 
 internal object LeaderboardUiRenderer {
-
-    fun renderPodium(
-        binding: FragmentBoardBinding,
-        entries: List<LeaderboardEntry>,
-        onInviteFriends: () -> Unit,
-    ) {
-        bindPodiumPlace(
-            container = binding.firstPlaceContainer,
-            avatarView = binding.firstAvatarTextView,
-            nameView = binding.firstNameTextView,
-            pointsView = binding.firstPointsTextView,
-            entry = entries.getOrNull(0),
-            avatarSizeDp = 52,
-            onInviteFriends = onInviteFriends,
-        )
-        bindPodiumPlace(
-            container = binding.secondPlaceContainer,
-            avatarView = binding.secondAvatarTextView,
-            nameView = binding.secondNameTextView,
-            pointsView = binding.secondPointsTextView,
-            entry = entries.getOrNull(1),
-            avatarSizeDp = 44,
-            onInviteFriends = onInviteFriends,
-        )
-        bindPodiumPlace(
-            container = binding.thirdPlaceContainer,
-            avatarView = binding.thirdAvatarTextView,
-            nameView = binding.thirdNameTextView,
-            pointsView = binding.thirdPointsTextView,
-            entry = entries.getOrNull(2),
-            avatarSizeDp = 44,
-            onInviteFriends = onInviteFriends,
-        )
-    }
 
     fun renderPodium(
         contentBinding: LayoutLeaderboardContentBinding,

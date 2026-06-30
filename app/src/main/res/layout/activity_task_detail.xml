@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/bg_app"
+    android:fillViewport="true"
+    android:overScrollMode="never"
+    android:paddingHorizontal="@dimen/spacing_lg"
+    android:paddingTop="40dp"
+    android:paddingBottom="@dimen/spacing_2xl">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_activity_toolbar" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xl"
+            android:background="@drawable/bg_home_card"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_lg">
+
+            <TextView
+                android:id="@+id/taskNameTextView"
+                style="@style/TextAppearance.App.Heading1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_primary" />
+
+            <TextView
+                android:id="@+id/pointsTextView"
+                style="@style/TextAppearance.App.CaptionSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:background="@drawable/bg_points_chip"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/spacing_md"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/shortDescriptionTextView"
+                style="@style/TextAppearance.App.BodySecondary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_md"
+                android:textColor="@color/text_secondary" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/detailsSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_lg"
+            android:background="@drawable/bg_home_card"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_lg">
+
+            <TextView
+                style="@style/TextAppearance.App.Heading2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/task_detail_section_learn_more"
+                android:textColor="@color/gold_primary" />
+
+            <TextView
+                android:id="@+id/arabicTextView"
+                style="@style/TextAppearance.App.Arabic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.1"
+                android:lineSpacingExtra="12dp"
+                tools:text="ٱللَّهُ لَآ إِلَـٰهَ إِلَّا هُوَ ٱلْحَىُّ ٱلْقَيُّومُ ۚ لَا تَأْخُذُهُۥ سِنَةٌۭ وَلَا نَوْمٌۭ ۚ لَّهُۥ مَا فِى ٱلسَّمَـٰوَٰتِ وَمَا فِى ٱلْأَرْضِ ۗ مَن ذَا ٱلَّذِى يَشْفَعُ عِندَهُۥٓ إِلَّا بِإِذْنِهِۦ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَىْءٍۢ مِّنْ عِلْمِهِۦٓ إِلَّا بِمَا شَآءَ ۚ وَسِعَ كُرْسِيُّهُ ٱلسَّمَـٰوَٰتِ وَٱلْأَرْضَ ۖ وَلَا يَـُٔودُهُۥ حِفْظُهُمَا ۚ وَهُوَ ٱلْعَلِىُّ ٱلْعَظِيمُ"
+                android:layout_marginTop="@dimen/spacing_md"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textColor="@color/gold_primary"
+                android:textDirection="rtl" />
+
+            <View
+                android:id="@+id/arabicDetailDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/spacing_md"
+                android:layout_marginBottom="@dimen/spacing_sm"
+                android:alpha="0.35"
+                android:background="@color/text_muted"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/detailedDescriptionTextView"
+                style="@style/TextAppearance.App.BodyPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_lg"
+                android:lineSpacingExtra="4dp"
+                android:textColor="@color/text_primary" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

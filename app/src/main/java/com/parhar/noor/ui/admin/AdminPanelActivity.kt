@@ -19,6 +19,7 @@ class AdminPanelActivity : BaseActivity<ActivityAdminPanelBinding>() {
         bindMenuRow(binding.tasksTextView, R.string.admin_tasks_label)
         bindMenuRow(binding.categoriesTextView, R.string.admin_categories_label)
         bindMenuRow(binding.trophiesTextView, R.string.admin_trophies_label)
+        bindMenuRow(binding.ayatsTextView, R.string.admin_ayats_label)
 
         binding.tasksTextView.root.setOnClickListener {
             startActivity(TasksListActivity.createIntent(this))
@@ -28,6 +29,9 @@ class AdminPanelActivity : BaseActivity<ActivityAdminPanelBinding>() {
         }
         binding.trophiesTextView.root.setOnClickListener {
 //            startActivity(TrophiesListActivity.createIntent(this))
+        }
+        binding.ayatsTextView.root.setOnClickListener {
+            startActivity(AyatsListActivity.createIntent(this))
         }
     }
 

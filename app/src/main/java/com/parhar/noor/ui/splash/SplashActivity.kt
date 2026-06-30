@@ -7,9 +7,11 @@ import com.parhar.noor.R
 import com.parhar.noor.data.notifications.FcmTokenManager
 import com.parhar.noor.databinding.ActivitySplashBinding
 import com.parhar.noor.di.appContainer
+import com.parhar.noor.domain.model.Ayat
 import com.parhar.noor.ui.auth.LoginActivity
 import com.parhar.noor.ui.main.MainActivity
 import com.parhar.noor.ui.onboarding.OnboardingActivity
+import com.parhar.noor.utils.AyatQuoteBinder
 import com.parhar.noor.utils.BaseActivity
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.isActive
@@ -24,20 +26,32 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         ActivitySplashBinding.inflate(layoutInflater)
 
     override fun setupViews() {
-        showMotivationQuote()
+        loadMotivationQuote()
         binding.retryTextView.setOnClickListener {
             startSync()
         }
         startSync()
     }
 
-    private fun showMotivationQuote() {
-        val quotes = SplashMotivationQuotes.quotes
-        if (quotes.isEmpty()) return
-        val index = appContainer.sessionManager.consumeNextSplashMotivationQuoteIndex(quotes.size)
-        val quote = quotes[index]
-        binding.tvArabic.text = quote.arabic
-        binding.tvEnglishTranslation.text = quote.translation
+    private fun loadMotivationQuote() {
+        lifecycleScope.launch {
+            val ayats = appContainer.ayatsRepository.getSplashAyats()
+            if (ayats.isNotEmpty() && isActive && !isActivityGone()) {
+                val index = appContainer.sessionManager.consumeNextSplashMotivationQuoteIndex(ayats.size)
+                bindAyat(ayats[index])
+            }
+            runCatching { appContainer.ayatsRepository.syncAyatsFromRemote() }
+        }
+    }
+
+    private fun bindAyat(ayat: Ayat) {
+        AyatQuoteBinder.bind(
+            arabicTextView = binding.tvArabic,
+            urduTextView = binding.tvUrduTranslation,
+            englishTextView = binding.tvEnglishTranslation,
+            referenceTextView = binding.tvReference,
+            ayat = ayat,
+        )
     }
 
     private fun startSync() {

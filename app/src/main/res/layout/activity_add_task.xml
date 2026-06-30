@@ -4,18 +4,19 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_app"
     android:fillViewport="true"
+    android:paddingHorizontal="@dimen/spacing_lg"
     android:paddingTop="40dp"
-    android:paddingBottom="10dp">
+    android:paddingBottom="@dimen/spacing_2xl">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/spacing_lg">
+        android:orientation="vertical">
 
         <include
             android:id="@+id/toolbar"
             layout="@layout/layout_activity_toolbar" />
+
         <TextView
             style="@style/TextAppearance.App.CaptionSmall"
             android:layout_width="match_parent"
@@ -60,6 +61,80 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_lg"
+            android:text="@string/admin_task_short_description_label"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/taskShortDescriptionEditText"
+            style="@style/TextAppearance.App.Input"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:background="@drawable/bg_input"
+            android:hint="@string/admin_task_short_description_hint"
+            android:inputType="textCapSentences"
+            android:textColorHint="@color/text_muted" />
+
+        <TextView
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_lg"
+            android:text="@string/admin_task_arabic_label"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/taskArabicEditText"
+            style="@style/TextAppearance.App.Input"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/admin_multiline_input_height"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:background="@drawable/bg_input"
+            android:fontFamily="@font/amiri"
+            android:gravity="top|start"
+            android:hint="@string/admin_task_arabic_hint"
+            android:imeOptions="flagNoEnterAction"
+            android:inputType="textMultiLine"
+            android:minLines="5"
+            android:overScrollMode="always"
+            android:paddingHorizontal="@dimen/spacing_lg"
+            android:paddingVertical="@dimen/spacing_md"
+            android:scrollbars="vertical"
+            android:textAlignment="viewStart"
+            android:textColorHint="@color/text_muted"
+            android:textDirection="rtl" />
+
+        <TextView
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_lg"
+            android:text="@string/admin_task_detailed_description_label"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/taskDetailedDescriptionEditText"
+            style="@style/TextAppearance.App.Input"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/admin_multiline_input_height"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:background="@drawable/bg_input"
+            android:gravity="top|start"
+            android:hint="@string/admin_task_detailed_description_hint"
+            android:imeOptions="flagNoEnterAction"
+            android:inputType="textCapSentences|textMultiLine"
+            android:minLines="5"
+            android:overScrollMode="always"
+            android:paddingHorizontal="@dimen/spacing_lg"
+            android:paddingVertical="@dimen/spacing_md"
+            android:scrollbars="vertical"
+            android:textColorHint="@color/text_muted" />
+
+        <TextView
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_lg"
             android:text="CATEGORY"
             android:textStyle="bold" />
 
@@ -84,11 +159,51 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height"
             android:layout_marginTop="@dimen/spacing_sm"
-            android:text="1"
             android:background="@drawable/bg_input"
             android:hint="Enter points"
             android:inputType="number"
+            android:text="1"
             android:textColorHint="@color/text_muted" />
+
+        <TextView
+            style="@style/TextAppearance.App.CaptionSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_lg"
+            android:text="@string/admin_task_visibility_label"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/showTaskTextView"
+                style="@style/TextAppearance.App.Button"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_height"
+                android:layout_marginEnd="@dimen/spacing_sm"
+                android:layout_weight="1"
+                android:background="@drawable/bg_secondary_action"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:text="@string/admin_task_show_option" />
+
+            <TextView
+                android:id="@+id/hideTaskTextView"
+                style="@style/TextAppearance.App.Button"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_height"
+                android:layout_weight="1"
+                android:background="@drawable/bg_secondary_action"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:text="@string/admin_task_hide_option" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/statusTextView"

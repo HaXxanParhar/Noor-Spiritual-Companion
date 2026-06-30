@@ -43,12 +43,16 @@ class CatalogRepositoryImpl(
         }
     }
 
-    override fun observeTaskSections(includeEmptyCategories: Boolean): Flow<List<HomeTaskSection>> {
+    override fun observeTaskSections(
+        includeEmptyCategories: Boolean,
+        includeHiddenTasks: Boolean,
+    ): Flow<List<HomeTaskSection>> {
         return combine(observeCategories(), observeTaskItems()) { categories, taskItems ->
             CatalogSectionBuilder.buildSections(
                 categories = categories,
                 tasks = taskItems.map { it.task },
                 includeEmptyCategories = includeEmptyCategories,
+                includeHiddenTasks = includeHiddenTasks,
             )
         }
     }
@@ -187,7 +191,16 @@ class CatalogRepositoryImpl(
         )
     }
 
-    override suspend fun addTask(category: String, name: String, points: Int, emoji: String): String {
+    override suspend fun addTask(
+        category: String,
+        name: String,
+        points: Int,
+        emoji: String,
+        shortDescription: String,
+        detailedDescription: String,
+        arabic: String,
+        visible: Boolean,
+    ): String {
         val taskId = System.currentTimeMillis().toString()
         val now = System.currentTimeMillis()
         val position = nextPositionInCategory(category)
@@ -199,6 +212,10 @@ class CatalogRepositoryImpl(
                 points = points,
                 position = position,
                 emoji = emoji,
+                shortDescription = shortDescription,
+                detailedDescription = detailedDescription,
+                arabic = arabic,
+                visible = visible,
                 updatedAt = now,
                 syncStatus = SyncStatus.PENDING_PUSH,
             ),
@@ -213,6 +230,10 @@ class CatalogRepositoryImpl(
                 points = points,
                 position = position,
                 emoji = emoji,
+                shortDescription = shortDescription,
+                detailedDescription = detailedDescription,
+                arabic = arabic,
+                visible = visible,
             ),
         )
         return taskId
@@ -225,6 +246,10 @@ class CatalogRepositoryImpl(
         name: String,
         points: Int,
         emoji: String,
+        shortDescription: String,
+        detailedDescription: String,
+        arabic: String,
+        visible: Boolean,
     ) {
         val now = System.currentTimeMillis()
         val existing = taskDefinitionDao.getAll().firstOrNull { it.id == taskId }
@@ -243,6 +268,10 @@ class CatalogRepositoryImpl(
                 points = points,
                 position = position,
                 emoji = emoji,
+                shortDescription = shortDescription,
+                detailedDescription = detailedDescription,
+                arabic = arabic,
+                visible = visible,
             ),
             originalCategory = originalCategory.takeIf { categoryChanged },
         )
@@ -254,9 +283,29 @@ class CatalogRepositoryImpl(
                 points = points,
                 position = position,
                 emoji = emoji,
+                shortDescription = shortDescription,
+                detailedDescription = detailedDescription,
+                arabic = arabic,
+                visible = visible,
                 updatedAt = now,
                 syncStatus = SyncStatus.SYNCED,
             ),
+        )
+    }
+
+    override suspend fun setTaskVisible(taskId: String, category: String, visible: Boolean) {
+        val existing = taskDefinitionDao.getAll().firstOrNull { it.id == taskId } ?: return
+        updateTask(
+            taskId = taskId,
+            originalCategory = category,
+            category = existing.category,
+            name = existing.name,
+            points = existing.points,
+            emoji = existing.emoji,
+            shortDescription = existing.shortDescription,
+            detailedDescription = existing.detailedDescription,
+            arabic = existing.arabic,
+            visible = visible,
         )
     }
 
@@ -422,6 +471,10 @@ class CatalogRepositoryImpl(
             points = points,
             position = position,
             emoji = emoji,
+            shortDescription = shortDescription,
+            detailedDescription = detailedDescription,
+            arabic = arabic,
+            visible = visible,
         )
     }
 }

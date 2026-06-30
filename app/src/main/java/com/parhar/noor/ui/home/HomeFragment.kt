@@ -22,6 +22,7 @@ import com.parhar.noor.di.appContainer
 import com.parhar.noor.domain.model.HomeTaskSection
 import com.parhar.noor.domain.model.TaskItem
 import com.parhar.noor.ui.profile.ProfileActivity
+import com.parhar.noor.ui.tasks.TaskDetailActivity
 import com.parhar.noor.utils.AvatarRenderer
 import com.parhar.noor.utils.BaseFragment
 import com.parhar.noor.utils.DateKeyUtils
@@ -49,7 +50,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun setupViews() {
         sectionAdapter = TaskSectionAdapter(
-            onTaskClicked = ::onTaskClicked,
+            onTaskDetailClicked = ::onTaskDetailClicked,
+            onTaskCheckClicked = ::onTaskCheckClicked,
             onCannotOfferClicked = ::onCannotOfferClicked,
         )
         binding.tasksContainer.apply {
@@ -191,7 +193,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
 
-    private fun onTaskClicked(taskItem: TaskItem) {
+    private fun onTaskDetailClicked(taskItem: TaskItem) {
+        startActivity(TaskDetailActivity.createIntent(requireContext(), taskItem))
+    }
+
+    private fun onTaskCheckClicked(taskItem: TaskItem) {
         val isChecked = viewModel.todayTaskState.value.checkedTaskIds.contains(taskItem.id)
         viewModel.toggleTask(
             taskId = taskItem.id,
@@ -305,7 +311,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     )
 
     private class TaskSectionAdapter(
-        private val onTaskClicked: (TaskItem) -> Unit,
+        private val onTaskDetailClicked: (TaskItem) -> Unit,
+        private val onTaskCheckClicked: (TaskItem) -> Unit,
         private val onCannotOfferClicked: () -> Unit,
     ) : ListAdapter<HomeTaskSection, TaskSectionAdapter.SectionViewHolder>(SectionDiffCallback()) {
 
@@ -358,7 +365,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 parent,
                 false,
             )
-            return SectionViewHolder(binding, onTaskClicked, onCannotOfferClicked)
+            return SectionViewHolder(binding, onTaskDetailClicked, onTaskCheckClicked, onCannotOfferClicked)
         }
 
         override fun onBindViewHolder(holder: SectionViewHolder, position: Int) {
@@ -367,11 +374,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
         private class SectionViewHolder(
             private val binding: ItemHomeTaskSectionBinding,
-            private val onTaskClicked: (TaskItem) -> Unit,
+            private val onTaskDetailClicked: (TaskItem) -> Unit,
+            private val onTaskCheckClicked: (TaskItem) -> Unit,
             private val onCannotOfferClicked: () -> Unit,
         ) : RecyclerView.ViewHolder(binding.root) {
 
-            private val taskAdapter = TaskAdapter(onTaskClicked)
+            private val taskAdapter = TaskAdapter(onTaskDetailClicked, onTaskCheckClicked)
             private var boundSection: HomeTaskSection? = null
 
             init {
@@ -454,7 +462,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private class TaskAdapter(
-        private val onTaskClicked: (TaskItem) -> Unit,
+        private val onTaskDetailClicked: (TaskItem) -> Unit,
+        private val onTaskCheckClicked: (TaskItem) -> Unit,
     ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
         var currentSection: TaskSectionSnapshot? = null
@@ -502,7 +511,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 parent,
                 false,
             )
-            return TaskViewHolder(binding, onTaskClicked)
+            return TaskViewHolder(binding, onTaskDetailClicked, onTaskCheckClicked)
         }
 
         override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
@@ -521,7 +530,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
         private class TaskViewHolder(
             private val binding: ItemHomeTaskBinding,
-            private val onTaskClicked: (TaskItem) -> Unit,
+            private val onTaskDetailClicked: (TaskItem) -> Unit,
+            private val onTaskCheckClicked: (TaskItem) -> Unit,
         ) : RecyclerView.ViewHolder(binding.root) {
 
             private var boundTaskId: String? = null
@@ -540,6 +550,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 binding.iconTextView.text = task.emoji.takeIf { it.isNotBlank() } ?: DEFAULT_TASK_ICON
                 binding.iconTextView.setBackgroundResource(resolveIconBackground(category))
                 binding.taskNameTextView.text = task.name
+                if (task.shortDescription.isBlank()) {
+                    binding.shortDescriptionTextView.visibility = View.GONE
+                } else {
+                    binding.shortDescriptionTextView.visibility = View.VISIBLE
+                    binding.shortDescriptionTextView.text = task.shortDescription
+                }
                 binding.pointsTextView.visibility = if (task.points > 0) View.VISIBLE else View.GONE
                 binding.pointsTextView.text = context.resources.getQuantityString(
                     R.plurals.home_task_points,
@@ -560,10 +576,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 binding.statusTextView.renderStatus(isChecked)
                 val isInteractive = !isPrimaryLocked && !isReadOnly
                 binding.taskRow.alpha = if (isInteractive) 1f else 0.65f
-                binding.taskRow.isClickable = isInteractive
-                binding.taskRow.setOnClickListener(
+                binding.taskRow.isClickable = true
+                binding.taskRow.setOnClickListener { onTaskDetailClicked(taskItem) }
+                binding.statusTapArea.isClickable = isInteractive
+                binding.statusTapArea.alpha = if (isInteractive) 1f else 0.65f
+                binding.statusTapArea.setOnClickListener(
                     if (isInteractive) {
-                        { onTaskClicked(taskItem) }
+                        { onTaskCheckClicked(taskItem) }
                     } else {
                         null
                     },

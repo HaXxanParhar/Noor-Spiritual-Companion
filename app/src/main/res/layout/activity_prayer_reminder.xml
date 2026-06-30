@@ -3,15 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_app"
+    android:paddingHorizontal="@dimen/spacing_lg"
     android:paddingTop="40dp"
-    android:paddingBottom="10dp"
+    android:paddingBottom="@dimen/spacing_2xl"
     android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/spacing_lg">
+        android:orientation="vertical">
 
         <include
             android:id="@+id/toolbar"

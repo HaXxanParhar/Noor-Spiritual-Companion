@@ -3,6 +3,7 @@ package com.parhar.noor.data.local
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.parhar.noor.data.local.dao.AyatDao
 import com.parhar.noor.data.local.dao.CategoryDao
 import com.parhar.noor.data.local.dao.DailyTaskEntryDao
 import com.parhar.noor.data.local.dao.FavoriteBannerDao
@@ -12,6 +13,7 @@ import com.parhar.noor.data.local.dao.SyncOutboxDao
 import com.parhar.noor.data.local.dao.TaskDefinitionDao
 import com.parhar.noor.data.local.dao.UserDao
 import com.parhar.noor.data.local.dao.UserPreferencesDao
+import com.parhar.noor.data.local.entity.AyatEntity
 import com.parhar.noor.data.local.entity.CategoryEntity
 import com.parhar.noor.data.local.entity.DailyTaskEntryEntity
 import com.parhar.noor.data.local.entity.FavoriteBannerEntity
@@ -33,8 +35,9 @@ import com.parhar.noor.data.local.entity.UserPreferencesEntity
         UserPreferencesEntity::class,
         SyncOutboxEntity::class,
         SyncMetadataEntity::class,
+        AyatEntity::class,
     ],
-    version = 8,
+    version = 10,
     exportSchema = false,
 )
 @TypeConverters(NoorTypeConverters::class)
@@ -48,4 +51,5 @@ abstract class NoorDatabase : RoomDatabase() {
     abstract fun userPreferencesDao(): UserPreferencesDao
     abstract fun syncOutboxDao(): SyncOutboxDao
     abstract fun syncMetadataDao(): SyncMetadataDao
+    abstract fun ayatDao(): AyatDao
 }

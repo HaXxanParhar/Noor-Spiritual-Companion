@@ -41,6 +41,13 @@ class TasksListActivity : BaseActivity<ActivityTasksListBinding>() {
             selectTask(taskItem)
             true
         },
+        onVisibilityToggle = { taskItem ->
+            viewModel.setTaskVisible(
+                taskId = taskItem.id,
+                category = taskItem.task.category,
+                visible = !taskItem.task.visible,
+            )
+        },
         selectedTaskIdProvider = { selectedTask?.id },
     )
 
@@ -158,6 +165,7 @@ class TasksListActivity : BaseActivity<ActivityTasksListBinding>() {
 private class AdminTaskSectionAdapter(
     private val onTaskClicked: (TaskItem) -> Unit,
     private val onTaskLongClicked: (TaskItem) -> Boolean,
+    private val onVisibilityToggle: (TaskItem) -> Unit,
     private val selectedTaskIdProvider: () -> String?,
 ) : ListAdapter<HomeTaskSection, AdminTaskSectionAdapter.SectionViewHolder>(SectionDiffCallback) {
 
@@ -189,7 +197,7 @@ private class AdminTaskSectionAdapter(
             parent,
             false,
         )
-        return SectionViewHolder(binding, onTaskClicked, onTaskLongClicked, selectedTaskIdProvider)
+        return SectionViewHolder(binding, onTaskClicked, onTaskLongClicked, onVisibilityToggle, selectedTaskIdProvider)
     }
 
     override fun onBindViewHolder(holder: SectionViewHolder, position: Int) {
@@ -200,12 +208,14 @@ private class AdminTaskSectionAdapter(
         private val binding: ItemAdminTaskSectionBinding,
         private val onTaskClicked: (TaskItem) -> Unit,
         private val onTaskLongClicked: (TaskItem) -> Boolean,
+        private val onVisibilityToggle: (TaskItem) -> Unit,
         private val selectedTaskIdProvider: () -> String?,
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private val taskAdapter = AdminTaskRowAdapter(
             onTaskClicked = onTaskClicked,
             onTaskLongClicked = onTaskLongClicked,
+            onVisibilityToggle = onVisibilityToggle,
             selectedTaskIdProvider = selectedTaskIdProvider,
         )
 
@@ -243,6 +253,7 @@ private class AdminTaskSectionAdapter(
 private class AdminTaskRowAdapter(
     private val onTaskClicked: (TaskItem) -> Unit,
     private val onTaskLongClicked: (TaskItem) -> Boolean,
+    private val onVisibilityToggle: (TaskItem) -> Unit,
     private val selectedTaskIdProvider: () -> String?,
 ) : ListAdapter<TaskItem, AdminTaskRowAdapter.TaskViewHolder>(TaskDiffCallback) {
 
@@ -272,11 +283,25 @@ private class AdminTaskRowAdapter(
             val emojiPrefix = taskItem.task.emoji.takeIf { it.isNotBlank() }?.let { "$it " }.orEmpty()
             binding.taskNameTextView.text = "$emojiPrefix${taskItem.task.name}"
             binding.pointsTextView.text = "+${taskItem.task.points} pts"
+            binding.taskNameTextView.alpha = if (taskItem.task.visible) 1f else 0.45f
+            binding.pointsTextView.alpha = if (taskItem.task.visible) 1f else 0.45f
+            if (taskItem.task.visible) {
+                binding.visibilityToggleImageButton.setImageResource(R.drawable.ic_visibility)
+                binding.visibilityToggleImageButton.contentDescription =
+                    binding.root.context.getString(R.string.admin_task_hide)
+            } else {
+                binding.visibilityToggleImageButton.setImageResource(R.drawable.ic_visibility_off)
+                binding.visibilityToggleImageButton.contentDescription =
+                    binding.root.context.getString(R.string.admin_task_show)
+            }
             binding.root.setBackgroundResource(
                 if (isSelected) R.drawable.bg_quote_card else R.drawable.bg_home_row,
             )
             binding.root.setOnClickListener { onTaskClicked(taskItem) }
             binding.root.setOnLongClickListener { onTaskLongClicked(taskItem) }
+            binding.visibilityToggleImageButton.setOnClickListener {
+                onVisibilityToggle(taskItem)
+            }
         }
     }
 

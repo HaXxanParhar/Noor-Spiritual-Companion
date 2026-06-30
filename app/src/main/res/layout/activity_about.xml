@@ -4,15 +4,15 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_app"
     android:fillViewport="true"
-    android:overScrollMode="never">
+    android:overScrollMode="never"
+    android:paddingHorizontal="@dimen/spacing_lg"
+    android:paddingTop="40dp"
+    android:paddingBottom="@dimen/spacing_2xl">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingHorizontal="@dimen/spacing_lg"
-        android:paddingTop="40dp"
-        android:paddingBottom="@dimen/spacing_2xl">
+        android:orientation="vertical">
 
         <include
             android:id="@+id/toolbar"

@@ -11,8 +11,14 @@ object CatalogSectionBuilder {
         categories: List<Category>,
         tasks: List<TaskDefinition>,
         includeEmptyCategories: Boolean = false,
+        includeHiddenTasks: Boolean = false,
     ): List<HomeTaskSection> {
-        val tasksByCategory = tasks.groupBy { it.category }
+        val visibleTasks = if (includeHiddenTasks) {
+            tasks
+        } else {
+            tasks.filter { it.visible }
+        }
+        val tasksByCategory = visibleTasks.groupBy { it.category }
         val sortedCategories = categories.sortedWith(
             compareBy<Category> { it.position }.thenBy { it.category.lowercase() },
         )
